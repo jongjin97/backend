@@ -58,6 +58,17 @@ public class ProductService {
     }
 
     @Transactional
+    public List<ProductListDto> getProductList() {
+
+        List<Product> productList = productRepository.findAll();
+
+        return productList.stream()
+                .map(ProductListDto::new)
+                .collect(Collectors.toList());
+
+    }
+
+    @Transactional
     public List<ProductListDto> getProductListById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User not exist with ID : " + id));

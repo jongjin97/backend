@@ -33,4 +33,14 @@ public class ProductListDto {
         this.status = product.getStatus();
         this.hideStatus = product.getHideStatus();
     }
+
+    public ProductListDto(Product product) {
+        this.userId = product.getUser().getId();
+        this.pdTitle = product.getPdTitle();
+        this.pdContents = product.getPdContents();
+        this.pdCategory = product.getPdCategory();
+        this.price = product.getPrice();
+        this.status = product.getStatus();
+        this.hideStatus = product.getHideStatus();
+    }
 }

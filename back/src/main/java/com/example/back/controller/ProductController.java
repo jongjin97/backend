@@ -38,7 +38,15 @@ public class ProductController {
         return ResponseEntity.ok(pdDto);
     }
 
-    @GetMapping("/lists") //user에 따른 상품 조회
+    @GetMapping("/lists")
+    public ResponseEntity<List<ProductListDto>> getProductList() {
+
+        List<ProductListDto> pdDtoList = productService.getProductList();
+
+        return ResponseEntity.ok(pdDtoList);
+    }
+
+    @GetMapping("/lists/user") //user에 따른 상품 조회
     public ResponseEntity<List<ProductListDto>> getProductListById(@AuthenticationPrincipal PrincipalDetail principalDetail) {
 
         List<ProductListDto> pdDtoList = productService.getProductListById(principalDetail.getId());
