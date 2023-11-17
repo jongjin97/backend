@@ -178,6 +178,7 @@ public class ProductController {
                         .replace("back/src/main/resources/", ""));
                 // url을 통해 image파일 byte[]로 저장
                 byte[] imageBytes = classPathResource.getInputStream().readAllBytes();
+                responseProductImg.setUrl(responseProductImg.getUrl().replace("back/src/main/resources/images\\", ""));
                 responseProductImg.setData(imageBytes);
             }
         }
