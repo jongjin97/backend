@@ -17,18 +17,20 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findByRegionAndUser(Region region, User user);
     Optional<List<Product>> findAllByUser(User user);
-
+    //Product List 조회, 지역명 검색 가능
     @Query("SELECT p FROM Product p " +
             "JOIN FETCH p.region r " +
             "JOIN FETCH p.user u " +
             "LEFT JOIN FETCH p.productImages pi " +
             "WHERE r.regionName LIKE %:regionName% ")
     Slice<Product> findByRegion_RegionNameContainsOrderByRegTimeDesc(@Param("regionName") String regionName, Pageable pageable);
-
-    @Query("SELECT p, COUNT(sp) FROM Product p " +
+    // Product List의  조회수, 관심수 조회, 최신 순서 정렬
+    @Query("SELECT p, COUNT(sp), COUNT(CASE WHEN a.status = 'Y' THEN a ELSE NULL END) FROM Product p " +
             "LEFT JOIN p.selectProducts sp " +
+            "LEFT JOIN p.attentions a " +
             "WHERE p IN :products " +
-            "GROUP BY p")
+            "GROUP BY p " +
+            "ORDER BY p.regTime DESC")
     List<Object[]> findProductsAndCount(List<Product> products);
 
 }

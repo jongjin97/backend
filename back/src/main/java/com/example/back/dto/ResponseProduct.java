@@ -36,6 +36,8 @@ public class ResponseProduct {
 
     private Long selectedCount;
 
+    private Long attentionCount;
+
     private UserDto user;
 
     private RegionDto region;

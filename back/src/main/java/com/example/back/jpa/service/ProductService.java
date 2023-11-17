@@ -155,6 +155,7 @@ public class ProductService {
         for(int i=0; i<objects.size(); i++){
             ResponseProduct responseProduct = responseProductSlice.toList().get(i);
             responseProduct.setSelectedCount((Long) objects.get(i)[1]);
+            responseProduct.setAttentionCount((Long) objects.get(i)[2]);
         }
         return responseProductSlice;
     }
