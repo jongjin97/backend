@@ -177,4 +177,17 @@ public class ProductService {
 
         return new ResponseProduct(product);
     }
+
+    @Transactional
+    public Slice<ResponseProduct> getProductListByProductTitle(String productTitle, Pageable pageable){
+        Slice<Product> products = productRepository.findProductsByProductName(productTitle, pageable);
+        List<Object[]> objects = productRepository.findProductsAndCount(products.toList());
+        Slice<ResponseProduct> responseProductSlice = products.map(ResponseProduct::new);
+        for(int i=0; i<objects.size(); i++){
+            ResponseProduct responseProduct = responseProductSlice.toList().get(i);
+            responseProduct.setSelectedCount((Long) objects.get(i)[1]);
+            responseProduct.setAttentionCount((Long) objects.get(i)[2]);
+        }
+        return responseProductSlice;
+    }
 }

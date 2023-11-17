@@ -142,4 +142,21 @@ public class ProductController {
         return ResponseEntity.ok(responseProduct);
     }
 
+    @GetMapping("/lists/title")
+    public ResponseEntity<Slice<ResponseProduct>> getProductList(@RequestParam(defaultValue = "0") int page
+            ,@RequestParam("title") String title) throws IOException {
+        Pageable pageable = PageRequest.of(page, 2);
+        Slice<ResponseProduct> responseProducts = productService.getProductListByProductTitle(title, pageable);
+        // ResponseProductList의 Image를 byte[]로 추가
+        for(ResponseProduct responseProduct: responseProducts) {
+            for(ResponseProductImg responseProductImg: responseProduct.getImages()) {
+                ClassPathResource classPathResource = new ClassPathResource(responseProductImg.getUrl()
+                        .replace("back/src/main/resources/", ""));
+                // url을 통해 image파일 byte[]로 저장
+                byte[] imageBytes = classPathResource.getInputStream().readAllBytes();
+                responseProductImg.setData(imageBytes);
+            }
+        }
+        return ResponseEntity.ok(responseProducts);
+    }
 }
