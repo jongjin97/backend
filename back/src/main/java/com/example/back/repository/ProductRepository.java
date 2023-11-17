@@ -17,11 +17,17 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findByRegionAndUser(Region region, User user);
     Optional<List<Product>> findAllByUser(User user);
+
     List<Product> findAll();
 
     @Query(value = "select ui.id from UserInfo ui where ui.id = :id")
     Long countById(Long id);
-    
+    @Query("SELECT DISTINCT p FROM Product p " +
+            "JOIN FETCH p.region r " +
+            "JOIN FETCH p.user u " +
+            "JOIN FETCH p.productImages pi " +
+            "ORDER BY p.regTime DESC ")
+    Slice<Product> findAllProduct(Pageable pageable);
     //Product List 조회, 지역명 검색 가능
     @Query("SELECT DISTINCT p FROM Product p " +
             "JOIN FETCH p.region r " +

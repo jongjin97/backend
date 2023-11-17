@@ -167,4 +167,20 @@ public class ProductController {
         }
         return ResponseEntity.ok(responseProducts);
     }
+
+    @GetMapping("lists/all")
+    public ResponseEntity<Slice<ResponseProduct>> getAllProductList(@RequestParam(defaultValue = "0", required = false) int page) throws IOException {
+        Pageable pageable = PageRequest.of(page, 3);
+        Slice<ResponseProduct> responseProducts = productService.getAllProductList(pageable);
+        for(ResponseProduct responseProduct: responseProducts) {
+            for(ResponseProductImg responseProductImg: responseProduct.getImages()) {
+                ClassPathResource classPathResource = new ClassPathResource(responseProductImg.getUrl()
+                        .replace("back/src/main/resources/", ""));
+                // url을 통해 image파일 byte[]로 저장
+                byte[] imageBytes = classPathResource.getInputStream().readAllBytes();
+                responseProductImg.setData(imageBytes);
+            }
+        }
+        return ResponseEntity.ok(responseProducts);
+    }
 }
