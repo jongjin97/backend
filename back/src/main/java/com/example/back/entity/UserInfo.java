@@ -36,6 +36,10 @@ public class UserInfo extends BaseEntity {
 
     private String oriImgName; //원본 이미지 파일명
 
+    @OneToOne
+    @JoinColumn(name="user_id")
+    private User user;
+
     @Builder
     public UserInfo(String status, String phoneNum, String usrNickName, String imgUrl) {
         this.status = status;

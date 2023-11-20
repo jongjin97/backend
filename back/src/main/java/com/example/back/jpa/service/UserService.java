@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
+
 @RequiredArgsConstructor
 @Service
 public class UserService {
@@ -33,16 +35,6 @@ public class UserService {
 
         userDto.encodePassword(passwordEncoder);
         User user = userDto.toEntity();
-
-        String nickName = user.getNickname();
-
-        //userRepository.findByNickName();
-
-        System.out.println("nickName = " + nickName);
-        String status = user.getStatus();
-        System.out.println("status = " + status);
-
-        userInfoMapper.createUserInfo(nickName, status);
 
         //이메일 중복 검사
         validateDuplicateMember(user);
@@ -112,18 +104,16 @@ public class UserService {
 
     public UserInfo createUserInfo(UserInfoDto userInfoDto, MultipartFile profileImg, PrincipalDetail principalDetail) throws Exception {
 
+        User user = userRepository.findById(principalDetail.getId()).orElseThrow(EntityNotFoundException::new);
 
-        
-        Long id = userInfoRepository.findByNickName(principalDetail.getNickName());
-
-        if(id == null) {
+       /* if(id == null) {
             throw new IllegalStateException("존재하지 않는 닉네임입니다.");
-        }
+        }*/
 
         UserInfo userInfo = UserInfoDto.builder()
-                .id(id)
                 .phoneNum(userInfoDto.getPhoneNum())
                 .usrNickName(principalDetail.getNickName())
+                .user(user)
                 .build().toEntity();
 
         //유저 상세 정보 등록

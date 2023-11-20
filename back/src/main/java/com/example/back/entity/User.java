@@ -4,6 +4,7 @@ package com.example.back.entity;
 
 import com.example.back.constant.Role;
 import com.example.back.dto.UserDto;
+import com.example.back.dto.UserInfoDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -48,17 +49,20 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @OneToOne(mappedBy = "user")
+    private UserInfo userInfo;
+
     @Builder
-    public User(String email, String password, String nickname, String status, String provider, String providerId, Role role) {
+    public User(String email, String password, String nickname, String status, String provider, String providerId, Role role, UserInfo userInfo) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.status = status;
         this.provider = provider;
         this.providerId = providerId;
-        this.role = Role.USER;
+        this.role = role;
+        this.userInfo = userInfo;
     }
-
 
     public String getRoleKey() {
         return this.role.getKey();

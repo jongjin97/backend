@@ -2,6 +2,7 @@ package com.example.back.dto;
 
 import com.example.back.constant.Role;
 import com.example.back.entity.User;
+import com.example.back.entity.UserInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,6 +43,8 @@ public class UserDto {
 
     private String token;
 
+    private UserInfo userInfo;
+
     public UserDto(User user) {
         this.email = user.getEmail();
         this.password = user.getPassword();
@@ -57,6 +60,7 @@ public class UserDto {
                 .password(password)
                 .provider("user")
                 .role(Role.USER)
+                .userInfo(userInfo)
                 .build();
     }
 

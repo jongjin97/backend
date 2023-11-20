@@ -10,9 +10,6 @@ import java.util.Optional;
 @Repository
 public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
 
-    @Query(value = "select ui.id from UserInfo ui where ui.usrNickName = :nickName")
-    Long findByNickName(String nickName);
-
     @Query(value = "select ui.id from UserInfo ui where ui.id = :id")
     Long countById(Long id);
 }

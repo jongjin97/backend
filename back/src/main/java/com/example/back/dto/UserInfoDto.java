@@ -25,6 +25,8 @@ public class UserInfoDto {
 
     private String imgUrl; //프로필 이미지
 
+    private User user;
+
     public UserInfoDto(String phoneNum, String usrNickName, String imgUrl) {
         this.phoneNum = phoneNum;
         this.usrNickName = usrNickName;
@@ -34,8 +36,9 @@ public class UserInfoDto {
     public UserInfo toEntity() {
         return UserInfo.builder()
                 .phoneNum(phoneNum)
-                .usrNickName(usrNickName)
+                .usrNickName(user.getNickname())
                 .status("Y")
+                .user(user)
                 .build();
     }
 }
