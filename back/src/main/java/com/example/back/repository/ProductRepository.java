@@ -1,5 +1,7 @@
 package com.example.back.repository;
 
+import com.example.back.dto.MainProductDto;
+import com.example.back.dto.ProductSearchDto;
 import com.example.back.entity.Product;
 import com.example.back.entity.Region;
 import com.example.back.entity.User;
@@ -14,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long>, ProductCustomRepository {
     Optional<Product> findByRegionAndUser(Region region, User user);
     Optional<List<Product>> findAllByUser(User user);
 
@@ -22,12 +24,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query(value = "select ui.id from UserInfo ui where ui.id = :id")
     Long countById(Long id);
-    @Query("SELECT DISTINCT p FROM Product p " +
-            "JOIN FETCH p.region r " +
-            "JOIN FETCH p.user u " +
-            "JOIN FETCH p.productImages pi " +
-            "ORDER BY p.regTime DESC ")
-    Slice<Product> findAllProduct(Pageable pageable);
+
     //Product List 조회, 지역명 검색 가능
     @Query("SELECT DISTINCT p FROM Product p " +
             "JOIN FETCH p.region r " +
@@ -53,5 +50,4 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "WHERE p.pdTitle LIKE %:productTitle% " +
             "ORDER BY p.regTime DESC")
     Slice<Product> findProductsByProductName(String productTitle, Pageable pageable);
-
 }

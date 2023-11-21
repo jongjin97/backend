@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,15 @@ public class ProductController {
     public ProductDto getProductList(@PathVariable Long productId) {
 
         return productService.getProductList(productId);
+    }
+
+    //전체 상품조회
+    @GetMapping("/list")
+    public ResponseEntity<?> findAllItem(ProductSearchDto productSearchDto) {
+
+        List<MainProductDto> items = productService.getAllProduct(productSearchDto);
+
+        return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
     @GetMapping("/user") //user에 따른 상품 조회

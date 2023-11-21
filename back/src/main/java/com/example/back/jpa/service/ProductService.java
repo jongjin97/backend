@@ -236,16 +236,10 @@ public class ProductService {
     }
 
     @Transactional
-    public Slice<ResponseProduct> getAllProductList(Pageable pageable){
-        Slice<Product> products = productRepository.findAllProduct(pageable);
-        List<Object[]> objects = productRepository.findProductsAndCount(products.toList());
-        Slice<ResponseProduct> responseProductSlice = products.map(ResponseProduct::new);
-        for(int i=0; i<objects.size(); i++){
-            ResponseProduct responseProduct = responseProductSlice.toList().get(i);
-            responseProduct.setSelectedCount((Long) objects.get(i)[1]);
-            responseProduct.setAttentionCount((Long) objects.get(i)[2]);
-        }
-        return responseProductSlice;
-    }
+    public List<MainProductDto> getAllProduct(ProductSearchDto productSearchDto) {
 
+        List<MainProductDto> products = productRepository.findAllProductAndImgUrl(productSearchDto);
+
+        return products;
+    }
 }
