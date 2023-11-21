@@ -8,17 +8,16 @@ import com.example.back.entity.Region;
 import com.example.back.entity.User;
 import com.example.back.entity.*;
 import com.example.back.mybatis.mapper.PurchaseHistoryMapper;
-import com.example.back.repository.ProductRepository;
-import com.example.back.repository.RegionRepository;
-import com.example.back.repository.SelectProductRepository;
-import com.example.back.repository.UserRepository;
+import com.example.back.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,41 +30,70 @@ public class ProductService {
     private final RegionRepository regionRepository;
     private final UserRepository userRepository;
     private final SelectProductRepository selectProductRepository;
+    private final ProductImageRepository productImageRepository;
     private final PurchaseHistoryMapper purchaseHistoryMapper;
+    private final ProductImageService productImageService;
 
     @Transactional
-    public ProductDto createProduct(ProductDto productDto, PrincipalDetail principalDetail) {
-        Region region = regionRepository.findById(principalDetail.getId())
-                .orElseThrow(() -> new IllegalArgumentException("Region not found with ID : " + productDto.getRegionId()));
+    public Long createProduct(ProductDto productDto, List<MultipartFile> productImgFileList, PrincipalDetail principalDetail) throws Exception {
+
+        Region region = regionRepository.findByRegionId(principalDetail.getId());
+
+        System.out.println("region = " + region);
 
         User user = userRepository.findById(principalDetail.getId())
-                .orElseThrow(() -> new IllegalArgumentException("UserInfo not found with ID : " + productDto.getUserId()));
+                .orElseThrow(() -> new IllegalArgumentException("UserInfo not found with ID : " + principalDetail.getId()));
 
         Product product = Product.builder()
                 .user(user)
                 .region(region)
-                .status(productDto.getStatus())
+                .status("Y")
                 .pdTitle(productDto.getPdTitle())
                 .pdContents(productDto.getPdContents())
                 .pdCategory(productDto.getPdCategory())
                 .price(productDto.getPrice())
-                .hideStatus(productDto.getHideStatus())
+                .hideStatus("Y")
                 .build();
 
         productRepository.save(product);
 
-        return new ProductDto(product, region, user);
+        System.out.println("product = " + product);
+        //pdTitle, pdContents, pdCategory, price
+
+        //이미지 등록
+        for(int i=0; i<productImgFileList.size(); i++) {
+
+            ProductImage productImage = new ProductImage();
+            productImage.setProduct(product);
+            if(i == 0)
+                productImage.setRepImgYn("Y");
+            else
+                productImage.setRepImgYn("N");
+            productImageService.saveProductImage(productImage, productImgFileList.get(i));
+        }
+
+        return product.getId();
     }
 
-    @Transactional
-    public List<ProductListDto> getProductList() {
+    //상품 조회
+    @Transactional(readOnly = true)
+    public ProductDto getProductList(Long productId) {
 
-        List<Product> productList = productRepository.findAll();
+        List<ProductImage> productImageList = productImageRepository.findByProductIdOrderByIdAsc(productId);
 
-        return productList.stream()
-                .map(ProductListDto::new)
-                .collect(Collectors.toList());
+        System.out.println("productImageList = " + productImageList);
+        List<ProductImageDto> productImageDtoList = new ArrayList<>();
 
+        for(ProductImage productImage : productImageList) {
+
+            ProductImageDto productImageDto = ProductImageDto.of(productImage);
+            productImageDtoList.add(productImageDto);
+        }
+
+        Product product = productRepository.findById(productId).orElseThrow(EntityNotFoundException::new);
+        ProductDto productDto = ProductDto.of(product);
+        productDto.setProductImageDtoList(productImageDtoList);
+        return productDto;
     }
 
     @Transactional
@@ -81,19 +109,24 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductListDto updateProduct(@PathVariable Long id, Product productDetails) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Product not exist with id :" + id));
+    public Long updateProduct(Long productId, ProductDto productDto, List<MultipartFile> productImgFileList) throws Exception {
 
-        product.setPdTitle(productDetails.getPdTitle());
-        product.setPdContents(productDetails.getPdContents());
-        product.setPrice(productDetails.getPrice());
-        product.setHideStatus(productDetails.getHideStatus());
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품 입니다. :" + productId));
 
+        product.updateProduct(productDto);
 
+        List<Long> productImgIds = productImageRepository.countById(productId);
 
-        Product updatedProduct = productRepository.save(product);
-        return new ProductListDto(updatedProduct, product.getUser());
+        //이미지 등록
+        if(productImgFileList != null) {
+            for (int i = 0; i < productImgFileList.size(); i++) {
+
+                productImageService.updateProductImage(productImgIds.get(i), productImgFileList.get(i));
+            }
+        }
+
+        return product.getId();
     }
 
     @Transactional

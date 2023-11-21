@@ -1,6 +1,7 @@
 package com.example.back.entity;
 
 
+import com.example.back.dto.ProductDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
@@ -73,5 +74,11 @@ public class Product extends BaseEntity {
         this.hideStatus = hideStatus;
         this.region = region;
         this.user = user;
+    }
+
+    public void updateProduct(ProductDto productDto) {
+        this.pdTitle = productDto.getPdTitle();
+        this.pdContents = productDto.getPdContents();
+        this.price = productDto.getPrice();
     }
 }
