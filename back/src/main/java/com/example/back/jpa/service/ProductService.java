@@ -242,4 +242,11 @@ public class ProductService {
 
         return products;
     }
+    @Transactional
+    public List<MainProductDto> getAllProductByUser(Long id) {
+
+        List<MainProductDto> products = productRepository.findAllProductByUser(id);
+
+        return products;
+    }
 }

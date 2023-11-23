@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.persistence.FetchType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,12 +47,12 @@ public class Product extends BaseEntity {
     @Column(nullable = false)
     private String hideStatus; //판매 완료된 상품 중 N: 숨기지 않음 Y: 숨김
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
     @JsonIgnore
     private Region region;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;

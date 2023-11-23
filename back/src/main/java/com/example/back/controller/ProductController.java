@@ -42,11 +42,12 @@ public class ProductController {
     }
 
     @GetMapping("/user") //user에 따른 상품 조회
-    public ResponseEntity<List<ProductListDto>> getProductListById(@AuthenticationPrincipal PrincipalDetail principalDetail) {
+    public ResponseEntity<List<MainProductDto>> getProductListById(@AuthenticationPrincipal PrincipalDetail principalDetail) {
 
-        List<ProductListDto> pdDtoList = productService.getProductListById(principalDetail.getId());
+//        List<ProductListDto> pdDtoList = productService.getProductListById(principalDetail.getId());
+        List<MainProductDto> items = productService.getAllProductByUser(principalDetail.getId());
 
-        return ResponseEntity.ok(pdDtoList);
+        return ResponseEntity.ok(items);
     }
 
     @PostMapping(value = "/new") // 상품 등록
