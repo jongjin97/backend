@@ -34,7 +34,8 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository{
                                 product.pdTitle,
                                 product.pdContents,
                                 productImage.imgUrl,
-                                product.price)
+                                product.price,
+                                product.status)
                 )
                 .from(productImage)
                 .join(productImage.product, product)
@@ -55,7 +56,8 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository{
                                 product.pdTitle,
                                 product.pdContents,
                                 productImage.imgUrl,
-                                product.price)
+                                product.price,
+                                product.status)
                 )
                 .from(productImage)
                 .join(productImage.product, product)
