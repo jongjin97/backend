@@ -106,7 +106,8 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository{
                                 product.pdContents,
                                 product.pdCategory,
                                 productImage.imgUrl,
-                                product.price)
+                                product.price,
+                                product.status)
                 )
                 .from(productImage)
                 .join(productImage.product, product)
