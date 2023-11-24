@@ -33,6 +33,7 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository{
                                 product.id,
                                 product.pdTitle,
                                 product.pdContents,
+                                product.pdCategory,
                                 productImage.imgUrl,
                                 product.price,
                                 product.status)
@@ -55,6 +56,7 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository{
                                 product.id,
                                 product.pdTitle,
                                 product.pdContents,
+                                product.pdCategory,
                                 productImage.imgUrl,
                                 product.price,
                                 product.status)
@@ -63,6 +65,53 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository{
                 .join(productImage.product, product)
                 .where(productImage.repImgYn.eq("Y"))
                 .where(product.user.id.eq(id))
+                .orderBy(product.id.desc())
+                .fetch();
+    }
+
+    @Override
+    public List<MainProductDto> findSearchProductAndImgUrl(String searchQuery) {
+
+        QProduct product = QProduct.product;
+        QProductImage productImage = QProductImage.productImage;
+
+        return queryFactory.select(
+                        new QMainProductDto(
+                                product.id,
+                                product.pdTitle,
+                                product.pdContents,
+                                product.pdCategory,
+                                productImage.imgUrl,
+                                product.price,
+                                product.status)
+                )
+                .from(productImage)
+                .join(productImage.product, product)
+                .where(productImage.repImgYn.eq("Y"))
+                .where(pdTitleLike(searchQuery))
+                .orderBy(product.id.desc())
+                .fetch();
+    }
+
+    @Override
+    public List<MainProductDto> findCategoryProduct(String pdCategory) {
+
+        QProduct product = QProduct.product;
+        QProductImage productImage = QProductImage.productImage;
+
+        return queryFactory.select(
+                        new QMainProductDto(
+                                product.id,
+                                product.pdTitle,
+                                product.pdContents,
+                                product.pdCategory,
+                                productImage.imgUrl,
+                                product.price)
+                )
+                .from(productImage)
+                .join(productImage.product, product)
+                .where(productImage.repImgYn.eq("Y"))
+                .where(QProduct.product.pdCategory.eq(pdCategory))
                 .orderBy(product.id.desc())
                 .fetch();
     }
