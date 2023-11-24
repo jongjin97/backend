@@ -262,4 +262,11 @@ public class ProductService {
 
         return products;
     }
+
+    public void updateProductStatus(Long productId, String status) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("Product not exist with id :" + productId));
+        product.setStatus(status);
+        productRepository.save(product);
+    }
 }

@@ -140,4 +140,10 @@ public class ProductController {
         }
         return ResponseEntity.ok(responseProducts);
     }
+
+    @PutMapping("/status/{id}/{status}")
+    public ResponseEntity<Object> updateStatus(@PathVariable Long id, @PathVariable String status) {
+        productService.updateProductStatus(id, status);
+        return ResponseEntity.ok().build();
+    }
 }
