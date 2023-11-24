@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface ProductCustomRepository {
     List<MainProductDto> findAllProductAndImgUrl(ProductSearchDto productSearchDto);
+
+    List<MainProductDto> findSearchProductAndImgUrl(String searchQuery);
     List<MainProductDto> findAllProductByUser(Long id);
 }

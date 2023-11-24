@@ -32,10 +32,21 @@ public class ProductController {
         return productService.getProductList(productId);
     }
 
-    //전체 상품조회
+    //검색을 통한 상품 조회
+    @GetMapping("/search/{searchQuery}")
+    public ResponseEntity<?> findAllItem(@PathVariable String searchQuery) {
+
+        System.out.println("SearchQuery = " + searchQuery);
+
+        List<MainProductDto> items = productService.getSearchProduct(searchQuery);
+
+        return new ResponseEntity<>(items, HttpStatus.OK);
+    }
+
+    //전체 상품 조회
     @GetMapping("/list")
     public ResponseEntity<?> findAllItem(ProductSearchDto productSearchDto) {
-
+        
         List<MainProductDto> items = productService.getAllProduct(productSearchDto);
 
         return new ResponseEntity<>(items, HttpStatus.OK);

@@ -249,4 +249,11 @@ public class ProductService {
 
         return products;
     }
+
+    public List<MainProductDto> getSearchProduct(String searchQuery) {
+
+        List<MainProductDto> products = productRepository.findSearchProductAndImgUrl(searchQuery);
+
+        return products;
+    }
 }
