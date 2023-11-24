@@ -43,6 +43,17 @@ public class ProductController {
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
+    //카테고리별 상품 조회
+    @GetMapping("/category/{pdCategory}")
+    public ResponseEntity<?> findCategoryProduct(@PathVariable String pdCategory) {
+
+        System.out.println("SearchQuery = " + pdCategory);
+
+        List<MainProductDto> items = productService.findCategoryProduct(pdCategory);
+
+        return new ResponseEntity<>(items, HttpStatus.OK);
+    }
+
     //전체 상품 조회
     @GetMapping("/list")
     public ResponseEntity<?> findAllItem(ProductSearchDto productSearchDto) {

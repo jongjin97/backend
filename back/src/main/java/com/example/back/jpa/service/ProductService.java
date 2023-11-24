@@ -256,4 +256,10 @@ public class ProductService {
 
         return products;
     }
+
+    public List<MainProductDto> findCategoryProduct(String pdCategory) {
+        List<MainProductDto> products = productRepository.findCategoryProduct(pdCategory);
+
+        return products;
+    }
 }
