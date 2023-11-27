@@ -20,4 +20,6 @@ public interface PurchaseHistoryMapper {
 //    void updatePurchaseHistory(PurchaseHistoryDto purchaseHistoryDto); // 구매 이력 수정
 
     void deletePurchaseHistory(Long purchaseHistoryId); // 구매 이력 삭제
+
+    void createPurchaseHistoryWithoutUser(PurchaseHistoryDto purchaseHistoryDto); // 유저 없이 구매 이력 추가
 }

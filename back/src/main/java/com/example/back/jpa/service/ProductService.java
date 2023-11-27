@@ -262,11 +262,16 @@ public class ProductService {
 
         return products;
     }
-
+    @Transactional
     public void updateProductStatus(Long productId, String status) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("Product not exist with id :" + productId));
         product.setStatus(status);
+        if(status.equals("C")){
+            PurchaseHistoryDto purchaseHistoryDto = new PurchaseHistoryDto();
+            purchaseHistoryDto.setProductId(productId);
+            purchaseHistoryMapper.createPurchaseHistoryWithoutUser(purchaseHistoryDto);
+        }
         productRepository.save(product);
     }
 }

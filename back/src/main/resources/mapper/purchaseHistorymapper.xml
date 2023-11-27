@@ -43,5 +43,8 @@
         WHERE purchase_history_id = #{purchaseId}
     </delete>
 
-
+    <insert id="createPurchaseHistoryWithoutUser" parameterType="PurchaseHistoryDto">
+        INSERT INTO purchase_history (reg_time, update_time, status, product_id, user_id)
+        VALUES (NOW(), NOW(), 'Y', #{productId}, null)
+    </insert>
 </mapper>
