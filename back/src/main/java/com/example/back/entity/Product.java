@@ -65,6 +65,8 @@ public class Product extends BaseEntity {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Attention> attentions = new ArrayList<>();
+    @OneToOne(mappedBy = "product" , cascade = CascadeType.ALL)
+    private PurchaseHistory purchaseHistory;
     @Builder
     public Product(String status, String pdTitle, String pdContents, String pdCategory, String price, String hideStatus, Region region, User user) {
         this.status = status;
