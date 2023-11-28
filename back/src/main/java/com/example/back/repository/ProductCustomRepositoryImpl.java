@@ -6,6 +6,7 @@ import com.example.back.dto.ProductSearchDto;
 import com.example.back.dto.QMainProductDto;
 import com.example.back.entity.QProduct;
 import com.example.back.entity.QProductImage;
+import com.example.back.entity.QPurchaseHistory;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +14,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
-
-import static com.example.back.entity.QProduct.product;
 
 @Repository
 @RequiredArgsConstructor

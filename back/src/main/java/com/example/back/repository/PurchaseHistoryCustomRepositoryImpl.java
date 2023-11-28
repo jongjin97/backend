@@ -1,0 +1,59 @@
+package com.example.back.repository;
+
+import com.example.back.dto.PurchaseDto;
+import com.example.back.dto.QPurchaseDto;
+import com.example.back.entity.QProduct;
+import com.example.back.entity.QProductImage;
+import com.example.back.entity.QPurchaseHistory;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+@Repository
+@RequiredArgsConstructor
+public class PurchaseHistoryCustomRepositoryImpl implements PurchaseHistoryCustomRepository{
+    private final JPAQueryFactory queryFactory;
+
+    @Override
+    public List<PurchaseDto> findSaleHistory(Long id) {
+        QProduct product = QProduct.product;
+        QProductImage productImage = QProductImage.productImage;
+        QPurchaseHistory purchaseHistory = QPurchaseHistory.purchaseHistory;
+        return queryFactory.select(
+                new QPurchaseDto(purchaseHistory.id,
+                        product.pdTitle,
+                        productImage.imgUrl,
+                        product.price,
+                        product.status,
+                        purchaseHistory.regTime)
+                ).from(product)
+                .join(product.productImages, productImage)
+                .join(product.purchaseHistory, purchaseHistory)
+                .where(productImage.repImgYn.eq("Y"))
+                .where(product.user.id.eq(id))
+                .orderBy(product.id.desc())
+                .fetch();
+    }
+
+    @Override
+    public List<PurchaseDto> findPurchaseHistory(Long id) {
+        QProduct product = QProduct.product;
+        QProductImage productImage = QProductImage.productImage;
+        QPurchaseHistory purchaseHistory = QPurchaseHistory.purchaseHistory;
+        return queryFactory.select(
+                        new QPurchaseDto(purchaseHistory.id,
+                                product.pdTitle,
+                                productImage.imgUrl,
+                                product.price,
+                                product.status,
+                                purchaseHistory.regTime)
+                ).from(product)
+                .join(product.productImages, productImage)
+                .join(product.purchaseHistory, purchaseHistory)
+                .where(productImage.repImgYn.eq("Y"))
+                .where(purchaseHistory.user.id.eq(id))
+                .orderBy(product.id.desc())
+                .fetch();
+    }
+}
