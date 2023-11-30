@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -62,14 +63,16 @@ public class PurchaseHistoryController {
     }
 
     @GetMapping("/purchase")
-    public ResponseEntity<List<PurchaseDto>> findMyPurchaseHistory(@AuthenticationPrincipal PrincipalDetail principalDetail){
-        List<PurchaseDto> list = purchaseHistoryService.findPurchaseHistory(principalDetail.getId());
+    public ResponseEntity<List<PurchaseDto>> findMyPurchaseHistory(@AuthenticationPrincipal PrincipalDetail principalDetail
+            ,@RequestParam(value = "title", required = false) String title, @RequestParam(value = "period", required = false) String period){
+        List<PurchaseDto> list = purchaseHistoryService.findPurchaseHistory(principalDetail.getId(), title, period);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     @GetMapping("/sale")
-    public ResponseEntity<List<PurchaseDto>> findMySaleHistory(@AuthenticationPrincipal PrincipalDetail principalDetail){
-        List<PurchaseDto> list = purchaseHistoryService.findSaleHistory(principalDetail.getId());
+    public ResponseEntity<List<PurchaseDto>> findMySaleHistory(@AuthenticationPrincipal PrincipalDetail principalDetail
+            ,@RequestParam(value = "title", required = false) String title, @RequestParam(value = "period", required = false) String period){
+        List<PurchaseDto> list = purchaseHistoryService.findSaleHistory(principalDetail.getId(), title, period);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }

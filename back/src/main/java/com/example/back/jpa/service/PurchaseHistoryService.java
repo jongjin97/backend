@@ -13,11 +13,11 @@ public class PurchaseHistoryService {
 
     private final PurchaseHistoryReposiory purchaseHistoryReposiory;
 
-    public List<PurchaseDto> findPurchaseHistory(Long id){
-        return purchaseHistoryReposiory.findPurchaseHistory(id);
+    public List<PurchaseDto> findPurchaseHistory(Long id, String title, String period){
+        return purchaseHistoryReposiory.findPurchaseHistory(id, title, period);
     }
 
-    public List<PurchaseDto> findSaleHistory(Long id){
-        return purchaseHistoryReposiory.findSaleHistory(id);
+    public List<PurchaseDto> findSaleHistory(Long id, String title, String period){
+        return purchaseHistoryReposiory.findSaleHistory(id, title, period);
     }
 }
