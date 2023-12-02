@@ -2,6 +2,7 @@ package com.example.back.controller;
 
 
 import com.example.back.config.auth.PrincipalDetail;
+import com.example.back.dto.ResponseUserInfoDto;
 import com.example.back.dto.UserDto;
 import com.example.back.dto.UserInfoDto;
 import com.example.back.entity.User;
@@ -87,5 +88,11 @@ public class UserController {
         return userService.updateUserInfo(userInfoDto, profileImg, principalDetail);
     }
 
+    @PostMapping("/info/new2")
+    public ResponseEntity<ResponseUserInfoDto> createUserInfov2(@RequestPart UserInfoDto userInfoDto, @RequestPart MultipartFile profileImg,
+                                                @AuthenticationPrincipal PrincipalDetail principalDetail) throws Exception {
+        ResponseUserInfoDto responseUserInfoDto = userService.createUserInfov2(userInfoDto, profileImg, principalDetail);
 
+        return new ResponseEntity<>(responseUserInfoDto, HttpStatus.OK);
+    }
 }

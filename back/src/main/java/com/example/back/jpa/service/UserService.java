@@ -3,6 +3,7 @@ package com.example.back.jpa.service;
 
 import com.example.back.config.JwtProvider;
 import com.example.back.config.auth.PrincipalDetail;
+import com.example.back.dto.ResponseUserInfoDto;
 import com.example.back.dto.UserDto;
 import com.example.back.dto.UserInfoDto;
 import com.example.back.entity.User;
@@ -134,5 +135,22 @@ public class UserService {
         userInfoService.updateProfileImg(profileImgIds, profileImg);
 
         return userInfoRepository.save(userInfo);
+    }
+    @Transactional
+    public ResponseUserInfoDto createUserInfov2(UserInfoDto userInfoDto, MultipartFile profileImg, PrincipalDetail principalDetail) throws Exception {
+        User user = userRepository.findById(principalDetail.getId()).orElseThrow(EntityNotFoundException::new);
+        UserInfo userInfo = userInfoRepository.findByUser_Id(principalDetail.getId()).orElse(UserInfoDto.builder()
+                .phoneNum(userInfoDto.getPhoneNum())
+                .usrNickName(userInfoDto.getUsrNickName())
+                .user(user)
+                .build().toEntity());
+        UserInfo savedUserInfo = userInfoService.saveProfileImgv2(userInfo, profileImg);
+        ResponseUserInfoDto responseUserInfoDto = ResponseUserInfoDto.builder()
+                .id(savedUserInfo.getId())
+                .phoneNum(savedUserInfo.getPhoneNum())
+                .imgUrl(savedUserInfo.getImgUrl())
+                .usrNickName(savedUserInfo.getUsrNickName())
+                .build();
+        return responseUserInfoDto;
     }
 }

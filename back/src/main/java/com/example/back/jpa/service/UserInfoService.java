@@ -59,4 +59,21 @@ public class UserInfoService {
             savedProfileImg.updateProfileImg(oriImgName, imgName, imgUrl);
         }
     }
+    public UserInfo saveProfileImgv2(UserInfo userInfo, MultipartFile profileImgFile) throws Exception {
+
+        String oriImgName = profileImgFile.getOriginalFilename();
+        String imgName = "";
+        String imgUrl = "";
+
+        //파일 업로드
+        if(!StringUtils.isEmpty(oriImgName)) {
+
+            imgName = fileService.uploadFile(profileImgLocation, oriImgName, profileImgFile.getBytes());
+            imgUrl = "/images/user/" + imgName;
+        }
+
+        //상품 이미지 정보 저장
+        userInfo.updateProfileImg(oriImgName, imgName, imgUrl);
+        return userInfoRepository.save(userInfo);
+    }
 }
