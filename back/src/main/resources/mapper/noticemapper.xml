@@ -36,9 +36,9 @@
 
     <!-- 공지사항 삭제 -->
     <delete id="deleteNotice">
-        <if test="Pri.Role.name() == 'ADMIN'">
+
         DELETE FROM notice
         WHERE notice_id = #{id};
-        </if>
+
     </delete>
 </mapper>
