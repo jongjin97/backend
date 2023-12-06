@@ -40,9 +40,9 @@ public class NoticeController {
     }
 
     //공지사항 수정
-    @PostMapping("/update")
-    public void updateNotice(@Valid @RequestBody NoticeDto noticeDto, @AuthenticationPrincipal PrincipalDetail principalDetail) {
-        noticeMapper.updateNotice(noticeDto, principalDetail);
+    @PutMapping("/update/{id}")
+    public void updateNotice(@Valid @PathVariable Long id, @RequestBody NoticeDto noticeDto, @AuthenticationPrincipal PrincipalDetail principalDetail) {
+        noticeMapper.updateNotice(id,noticeDto, principalDetail);
 
     }
 

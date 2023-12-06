@@ -25,13 +25,11 @@
 
     <!-- 공지사항 수정 -->
     <update id="updateNotice" parameterType="NoticeDto">
-        <if test="Pri.Role.name() == 'ADMIN'">
         UPDATE notice
            SET notice_contents = #{Not.noticeContents},
                notice_title = #{Not.noticeTitle},
                update_time = now()
-         WHERE notice_id = #{Not.id}
-        </if>
+         WHERE notice_id = #{id}
     </update>
 
     <!-- 공지사항 삭제 -->

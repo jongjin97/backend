@@ -19,7 +19,7 @@ public interface NoticeMapper {
 
     Map<String, Object> selectNoticeDetail(Long id); //공지사항 상세보기 조회
 
-    void updateNotice(@Param("Not")NoticeDto noticeDto, @Param("Pri")PrincipalDetail principalDetail); //공지사항 수정
+    void updateNotice(@Param("id")long id, @Param("Not")NoticeDto noticeDto, @Param("Pri")PrincipalDetail principalDetail); //공지사항 수정
 
     void deleteNotice(Long id, @Param("Pri")PrincipalDetail principalDetail); //공지사항 삭제
 
