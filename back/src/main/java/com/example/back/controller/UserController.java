@@ -2,6 +2,7 @@ package com.example.back.controller;
 
 
 import com.example.back.config.auth.PrincipalDetail;
+import com.example.back.constant.Role;
 import com.example.back.dto.ResponseUserInfoDto;
 import com.example.back.dto.UserDto;
 import com.example.back.dto.UserInfoDto;
@@ -94,5 +95,10 @@ public class UserController {
         ResponseUserInfoDto responseUserInfoDto = userService.createUserInfov2(userInfoDto, profileImg, principalDetail);
 
         return new ResponseEntity<>(responseUserInfoDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/info/role")
+    public Role getRole(@AuthenticationPrincipal PrincipalDetail principalDetail) {
+        return principalDetail.getRole();
     }
 }
