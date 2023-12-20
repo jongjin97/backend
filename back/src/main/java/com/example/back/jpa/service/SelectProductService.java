@@ -28,4 +28,9 @@ public class SelectProductService {
 
         selectProductRepository.save(selectProduct);
     }
+
+    @Transactional
+    public void deleteSelectProduct(Long id) {
+        selectProductRepository.deleteById(id);
+    }
 }
