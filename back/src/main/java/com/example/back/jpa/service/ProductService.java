@@ -33,7 +33,7 @@ public class ProductService {
     private final ProductImageRepository productImageRepository;
     private final PurchaseHistoryMapper purchaseHistoryMapper;
     private final ProductImageService productImageService;
-
+    private final SelectProductService selectProductService;
     @Transactional
     public Long createProduct(ProductDto productDto, List<MultipartFile> productImgFileList, PrincipalDetail principalDetail) throws Exception {
 
@@ -76,8 +76,8 @@ public class ProductService {
     }
 
     //상품 조회
-    @Transactional(readOnly = true)
-    public ProductDto getProductList(Long productId) {
+    @Transactional//(readOnly = true)
+    public ProductDto getProductList(Long productId, PrincipalDetail principalDetail) {
 
         List<ProductImage> productImageList = productImageRepository.findByProductIdOrderByIdAsc(productId);
 
@@ -93,6 +93,10 @@ public class ProductService {
         Product product = productRepository.findById(productId).orElseThrow(EntityNotFoundException::new);
         ProductDto productDto = ProductDto.of(product);
         productDto.setProductImageDtoList(productImageDtoList);
+
+        if(principalDetail != null){
+               selectProductService.saveSelectProduct(product, principalDetail.getUser());
+        }
         return productDto;
     }
 

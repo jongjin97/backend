@@ -27,9 +27,9 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/list/{productId}") //상품 조회
-    public ProductDto getProductList(@PathVariable Long productId) {
+    public ProductDto getProductList(@PathVariable Long productId, @AuthenticationPrincipal PrincipalDetail principalDetail) {
 
-        return productService.getProductList(productId);
+        return productService.getProductList(productId ,principalDetail);
     }
 
     //검색을 통한 상품 조회
