@@ -1,5 +1,6 @@
 package com.example.back.dto;
 
+import com.example.back.entity.UserInfo;
 import lombok.*;
 
 @Getter
@@ -15,4 +16,11 @@ public class ResponseUserInfoDto {
     private String usrNickName; //닉네임
 
     private String imgUrl; //프로필 이미지
+
+    public ResponseUserInfoDto(UserInfo userInfo) {
+        this.id = userInfo.getId();
+        this.phoneNum = userInfo.getPhoneNum();
+        this.imgUrl = userInfo.getImgUrl();
+        this.usrNickName = userInfo.getUsrNickName();
+    }
 }

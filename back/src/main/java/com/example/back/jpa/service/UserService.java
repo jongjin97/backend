@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -98,7 +99,9 @@ public class UserService {
                 .role(user.getRole())
                 .token(jwtProvider.createToken(user.getEmail(), user.getRole()))
                 .build();
-
+        if(user.getUserInfo() != null){
+            result.setUserInfo(new ResponseUserInfoDto(user.getUserInfo()));
+        }
         return result;
     }
 
