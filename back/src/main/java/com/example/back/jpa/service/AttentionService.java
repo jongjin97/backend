@@ -1,5 +1,6 @@
 package com.example.back.jpa.service;
 
+import com.example.back.config.auth.PrincipalDetail;
 import com.example.back.dto.AttentionDto;
 import com.example.back.dto.RegionDto;
 import com.example.back.entity.Attention;
@@ -29,21 +30,25 @@ public class AttentionService {
 
     //Attention 삽입, 수정 메소드
     @Transactional
-    public AttentionDto saveAndUpdateAttention(AttentionDto attentionDto) {
+    public AttentionDto saveAndUpdateAttention(PrincipalDetail principalDetail, AttentionDto attentionDto) {
+
         //userId로 UserEntity 조회, 없으면 예외처리
-        User user = userRepository.findById(attentionDto.getUserId())
+        User user = userRepository.findById(principalDetail.getId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + attentionDto.getUserId()));
+
         //productId로 ProductEntity 조회, 없으면 예외처리
         Product product = productRepository.findById(attentionDto.getProductId())
                 .orElseThrow(() -> new IllegalArgumentException("Product not found with ID: " + attentionDto.getProductId()));
+
         //userEntity, productEntity로 AttentionEntity 조회, 없으면 생성
         Attention attention = attentionRepository.findByUserAndProduct(user, product)
                 .orElse(Attention.builder()
                         .user(user)
                         .product(product)
                         .build());
+
         //AttentionEntity의 status 수정
-        attention.setStatus(attention.getStatus());
+        attention.setStatus(attentionDto.getStatus());
         //AttentionEntity 저장
         attentionRepository.save(attention);
 

@@ -18,13 +18,7 @@ public class AttentionController {
 
     private final AttentionService attentionService;
 
-    @PostMapping
-    public ResponseEntity<AttentionDto> saveAndUpdateAttention(@RequestBody AttentionDto attentionDto){
-        AttentionDto attentionResult = attentionService.saveAndUpdateAttention(attentionDto);
-
-        return ResponseEntity.ok(attentionResult);
-    }
-
+    //등록한 관심 상품 조회
     @GetMapping("/lists")
     public ResponseEntity<List<AttentionDto>> getAttentionListByUserId(@AuthenticationPrincipal PrincipalDetail principalDetail){
 
@@ -32,4 +26,14 @@ public class AttentionController {
 
         return ResponseEntity.ok(attentionDtoList);
     }
+
+    //관심 상품 등록
+    @PostMapping
+    public ResponseEntity<AttentionDto> saveAndUpdateAttention(@AuthenticationPrincipal PrincipalDetail principalDetail, @RequestBody AttentionDto attentionDto){
+        AttentionDto attentionResult = attentionService.saveAndUpdateAttention(principalDetail, attentionDto);
+
+        return ResponseEntity.ok(attentionResult);
+    }
+
+
 }
