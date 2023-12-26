@@ -3,10 +3,7 @@ package com.example.back.dto;
 import com.example.back.constant.Role;
 import com.example.back.entity.User;
 import com.example.back.entity.UserInfo;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
@@ -20,6 +17,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Setter
 public class UserDto {
 
     private Long id;
@@ -43,7 +41,7 @@ public class UserDto {
 
     private String token;
 
-    private UserInfo userInfo;
+    private ResponseUserInfoDto userInfo;
 
     public UserDto(User user) {
         this.email = user.getEmail();
@@ -60,7 +58,6 @@ public class UserDto {
                 .password(password)
                 .provider("user")
                 .role(Role.USER)
-                .userInfo(userInfo)
                 .build();
     }
 
