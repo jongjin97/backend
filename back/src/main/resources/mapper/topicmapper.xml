@@ -12,7 +12,7 @@
 
     <!-- 관심 주제 목록 조회 -->
     <select id="selectTopicList" resultType="HashMap">
-        SELECT topic_name, status
+        SELECT topic_id, topic_name, status
         FROM topic
     </select>
 
