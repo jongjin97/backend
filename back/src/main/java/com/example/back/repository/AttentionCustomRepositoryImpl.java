@@ -33,7 +33,9 @@ public class AttentionCustomRepositoryImpl implements AttentionCustomRepository 
                                 product.pdCategory,
                                 productImage.imgUrl,
                                 product.price,
-                                product.status)
+                                product.status,
+                                product.regTime.stringValue()
+                        )
                 )
                 .from(product)
                 .join(productImage).on(product.id.eq(productImage.product.id))

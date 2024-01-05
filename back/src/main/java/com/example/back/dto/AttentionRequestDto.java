@@ -16,9 +16,10 @@ public class AttentionRequestDto {
     private String imgUrl; //이미지 경로
     private String price; //가격
     private String pdStatus; //상품 상태
+    private String regTime; //등록시간
 
     @QueryProjection
-    public AttentionRequestDto(Long product_id, String pdTitle, String pdContents, String pdCategory, String imgUrl, String price, String pdStatus) {
+    public AttentionRequestDto(Long product_id, String pdTitle, String pdContents, String pdCategory, String imgUrl, String price, String pdStatus, String regTime) {
         this.product_id = product_id;
         this.pdTitle = pdTitle;
         this.pdContents = pdContents;
@@ -26,5 +27,6 @@ public class AttentionRequestDto {
         this.imgUrl = imgUrl;
         this.price = price;
         this.pdStatus = pdStatus;
+        this.regTime = regTime;
     }
 }
