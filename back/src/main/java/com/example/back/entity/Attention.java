@@ -39,4 +39,8 @@ public class Attention extends BaseEntity{ // 상품 관심
         this.user = user;
         this.product = product;
     }
+
+    public void updateStatus(String status) {
+        this.status = status;
+    }
 }
