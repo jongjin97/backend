@@ -3,6 +3,9 @@ package com.example.back.controller;
 import com.example.back.config.auth.PrincipalDetail;
 //import com.example.back.service.AttentionService;
 import com.example.back.dto.AttentionDto;
+import com.example.back.dto.AttentionRequestDto;
+import com.example.back.dto.MainProductDto;
+import com.example.back.dto.ProductDto;
 import com.example.back.jpa.service.AttentionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,9 +32,9 @@ public class AttentionController {
 
     //status가 "Y"인(관심 활성화 된) 상품 조회
     @GetMapping("/lists/status")
-    public ResponseEntity<List<AttentionDto>> getAttentionListByStatusY(@AuthenticationPrincipal PrincipalDetail principalDetail){
+    public ResponseEntity<List<AttentionRequestDto>> getAttentionListByStatusY(@AuthenticationPrincipal PrincipalDetail principalDetail){
 
-        List<AttentionDto> attentionDtoList = attentionService.getAttentionListByStatusY(principalDetail.getId());
+        List<AttentionRequestDto> attentionDtoList = attentionService.getAttentionListByStatusY(principalDetail.getId());
 
         return ResponseEntity.ok(attentionDtoList);
     }

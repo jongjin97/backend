@@ -11,11 +11,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface AttentionRepository extends JpaRepository<Attention, Long> {
+public interface AttentionRepository extends JpaRepository<Attention, Long>, AttentionCustomRepository {
     Optional<Attention> findByUserAndProduct(User user, Product product);
 
     Optional<List<Attention>> findAllByUser(User user);
-
-    @Query(value = "select a from Attention a where a.status = 'Y' and a.user = :user")
-    List<Attention> findByStatusY(User user);
 }
