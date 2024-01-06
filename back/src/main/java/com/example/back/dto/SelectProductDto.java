@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Setter
 public class SelectProductDto {
     private Long id;
+    private Long pdId;
     private String pdTitle; //상품 제목
     private String imgUrl; //이미지 경로
     private String price; //가격
@@ -17,8 +18,9 @@ public class SelectProductDto {
     private LocalDateTime regTime; //등록 시간
 
     @QueryProjection
-    public SelectProductDto(Long id, String pdTitle, String imgUrl, String price, String pdStatus, LocalDateTime regTime) {
+    public SelectProductDto(Long id, Long pdId, String pdTitle, String imgUrl, String price, String pdStatus, LocalDateTime regTime) {
         this.id = id;
+        this.pdId = pdId;
         this.pdTitle = pdTitle;
         this.imgUrl = imgUrl;
         this.price = price;

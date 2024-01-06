@@ -25,6 +25,7 @@ public class PurchaseHistoryCustomRepositoryImpl implements PurchaseHistoryCusto
         QPurchaseHistory purchaseHistory = QPurchaseHistory.purchaseHistory;
         return queryFactory.select(
                 new QPurchaseDto(purchaseHistory.id,
+                        product.id,
                         product.pdTitle,
                         productImage.imgUrl,
                         product.price,
@@ -48,6 +49,7 @@ public class PurchaseHistoryCustomRepositoryImpl implements PurchaseHistoryCusto
         QPurchaseHistory purchaseHistory = QPurchaseHistory.purchaseHistory;
         return queryFactory.select(
                         new QPurchaseDto(purchaseHistory.id,
+                                product.id,
                                 product.pdTitle,
                                 productImage.imgUrl,
                                 product.price,

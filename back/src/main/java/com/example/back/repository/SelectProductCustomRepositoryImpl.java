@@ -28,6 +28,7 @@ public class SelectProductCustomRepositoryImpl implements SelectProductCustomRep
 
         return queryFactory.select(
                         new QSelectProductDto(selectProduct.id,
+                                product.id,
                                 product.pdTitle,
                                 productImage.imgUrl,
                                 product.price,
