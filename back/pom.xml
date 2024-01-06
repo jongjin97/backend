@@ -170,10 +170,14 @@
 			<artifactId>junit-jupiter</artifactId>
 			<scope>test</scope>
 		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.springframework</groupId>-->
+<!--			<artifactId>spring-websocket</artifactId>-->
+<!--			<version>4.3.24.RELEASE</version>-->
+<!--		</dependency>-->
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-websocket</artifactId>
-			<version>4.3.24.RELEASE</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
 
 		<!-- json simple  -->
