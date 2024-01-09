@@ -82,6 +82,7 @@ public class Product extends BaseEntity {
     public void updateProduct(ProductDto productDto) {
         this.pdTitle = productDto.getPdTitle();
         this.pdContents = productDto.getPdContents();
+        this.pdCategory = productDto.getPdCategory();
         this.price = productDto.getPrice();
     }
 }

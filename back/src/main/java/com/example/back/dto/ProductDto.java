@@ -24,7 +24,6 @@ public class ProductDto {
     @NotEmpty(message = "상품 내용은 필수 입력 값 입니다.")
     private String pdContents; //상품 내용
 
-    //보류
     private String pdCategory; //카테고리 별 상품 분류
 
     @NotEmpty(message = "상품 가격은 필수 입력 값 입니다.")

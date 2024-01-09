@@ -81,8 +81,6 @@ public class ProductController {
 
     @PutMapping("/update/{productId}") //상품 수정
     public Long updateProduct(@PathVariable Long productId, @RequestPart ProductDto productDto, @RequestPart(required = false) List<MultipartFile> productImgFileList) throws Exception {
-
-
         return productService.updateProduct(productId, productDto, productImgFileList);
     }
 
