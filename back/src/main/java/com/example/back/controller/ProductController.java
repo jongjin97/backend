@@ -144,4 +144,10 @@ public class ProductController {
         productService.updateProductStatus(id, status);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/renew/{id}")
+    public void renewProduct(@PathVariable Long id){
+        productService.renewProduct(id);
+
+    }
 }

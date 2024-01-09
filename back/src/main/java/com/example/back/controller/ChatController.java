@@ -14,11 +14,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.socket.WebSocketMessage;
 
 import java.security.Principal;
 
-@Controller
+@RestController
 public class ChatController {
 
     @MessageMapping("/{roomId}")

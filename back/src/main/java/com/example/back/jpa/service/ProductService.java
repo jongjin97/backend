@@ -20,6 +20,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -278,4 +279,34 @@ public class ProductService {
         }
         productRepository.save(product);
     }
+
+    @Transactional
+    public void renewProduct(Long productId){
+        Product product = productRepository.findById(productId).orElseThrow(
+                IllegalArgumentException::new);
+        Product newProduct = Product.builder().pdTitle(product.getPdTitle())
+                .price(product.getPrice())
+                .pdContents(product.getPdContents())
+                .pdCategory(product.getPdCategory())
+                .hideStatus(product.getHideStatus())
+                .status("Y")
+                .user(product.getUser())
+                .region(product.getRegion()).build();
+        List<ProductImage> images = product.getProductImages();
+        List<ProductImage> newImages = new ArrayList<>();
+        for (ProductImage productImage: images){
+            ProductImage pi = new ProductImage();
+            pi.setImgUrl(productImage.getImgUrl());
+            pi.setImgName(productImage.getImgName());
+            pi.setOriImgName(productImage.getOriImgName());
+            pi.setRepImgYn(productImage.getRepImgYn());
+            pi.setImgUrl(productImage.getImgUrl());
+            pi.setProduct(newProduct);
+            newImages.add(pi);
+        }
+        newProduct.setProductImages(newImages);
+        productRepository.save(newProduct);
+
+    }
+
 }
