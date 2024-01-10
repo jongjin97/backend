@@ -8,4 +8,5 @@ import java.util.List;
 public interface AttentionCustomRepository {
 
     List<AttentionRequestDto> findProductAndImgUrl(Long userId);
+    List<AttentionRequestDto> findLikeProductOfPdTitle(String searchQuery, Long userId);
 }

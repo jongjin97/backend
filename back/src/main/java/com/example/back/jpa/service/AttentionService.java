@@ -81,11 +81,22 @@ public class AttentionService {
     public List<AttentionRequestDto> getAttentionListByStatusY(Long userId) {
 
         //userId로 UserEntity 조회, 없으면 예외 처리
-        User user = userRepository.findById(userId)
+        userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
 
 
         List<AttentionRequestDto> productList = attentionRepository.findProductAndImgUrl(userId);
+
+        return productList;
+    }
+
+    public List<AttentionRequestDto> getAttentionList(String searchQuery, Long userId) {
+
+        userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
+
+
+        List<AttentionRequestDto> productList = attentionRepository.findLikeProductOfPdTitle(searchQuery, userId);
 
         return productList;
     }

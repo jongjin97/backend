@@ -39,6 +39,15 @@ public class AttentionController {
         return ResponseEntity.ok(attentionDtoList);
     }
 
+    //status가 "Y"인(관심 활성화 된) 상품 조회
+    @GetMapping("/{searchQuery}")
+    public ResponseEntity<List<AttentionRequestDto>> getAttentionListByStatusY(@PathVariable String searchQuery, @AuthenticationPrincipal PrincipalDetail principalDetail){
+
+        List<AttentionRequestDto> attentionDtoList = attentionService.getAttentionList(searchQuery, principalDetail.getId());
+
+        return ResponseEntity.ok(attentionDtoList);
+    }
+
     //관심 상품 등록 및 수정
     @PostMapping
     public ResponseEntity<AttentionDto> saveAndUpdateAttention(@AuthenticationPrincipal PrincipalDetail principalDetail, @RequestBody AttentionDto attentionDto){
