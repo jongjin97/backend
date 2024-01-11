@@ -39,9 +39,9 @@ public class AttentionController {
         return ResponseEntity.ok(attentionDtoList);
     }
 
-    //status가 "Y"인(관심 활성화 된) 상품 조회
+    //관심상품으로 조회
     @GetMapping("/{searchQuery}")
-    public ResponseEntity<List<AttentionRequestDto>> getAttentionListByStatusY(@PathVariable String searchQuery, @AuthenticationPrincipal PrincipalDetail principalDetail){
+    public ResponseEntity<List<AttentionRequestDto>> getAttentionListByTitle(@PathVariable String searchQuery, @AuthenticationPrincipal PrincipalDetail principalDetail){
 
         List<AttentionRequestDto> attentionDtoList = attentionService.getAttentionList(searchQuery, principalDetail.getId());
 

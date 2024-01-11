@@ -74,7 +74,7 @@ public class AttentionCustomRepositoryImpl implements AttentionCustomRepository 
                 .where(productImage.repImgYn.eq("Y"))
                 .where(attention.status.eq("Y"))
                 .where(attention.user.id.eq(userId))
-                .where(QProduct.product.pdCategory.eq(searchQuery))
+                .where(pdTitleLike(searchQuery))
                 .fetch();
     }
 
