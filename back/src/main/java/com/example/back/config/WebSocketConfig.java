@@ -14,12 +14,8 @@ import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
-import org.springframework.security.authorization.AuthorizationManager;
-import org.springframework.security.config.annotation.web.messaging.MessageSecurityMetadataSourceRegistry;
-import org.springframework.security.config.annotation.web.socket.AbstractSecurityWebSocketMessageBrokerConfigurer;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.web.socket.config.annotation.*;
 
 import java.util.Objects;
@@ -28,18 +24,6 @@ import java.util.Objects;
  * 1:1 채팅 기능에 필요한 웹소켓
  */
 
-//@Configuration
-//@EnableWebSocket
-//@RequiredArgsConstructor
-//public class WebSocketConfig implements WebSocketConfigurer {
-//
-//    private final SocketHandler socketHandler;
-//
-//    @Override
-//    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-//        registry.addHandler(socketHandler, "/chating");
-//    }
-//}
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSocket
@@ -48,15 +32,18 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     private final JwtProvider jwtProvider;
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        // 메시지 보낼 받을 때 경로
+        // 메시지 받을 때 경로
+        // 클라이언트에서 보낸 메세지를 받을 prefix
         config.enableSimpleBroker("/sub");
         // 메시지 보낼 때 경로
+        // 해당 주소를 구독하고 있는 클라이언트들 에게 메세지 전달
         config.setApplicationDestinationPrefixes("/room");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // Stomp Socket 엔드포인트설정
+        // 주소 : ws://localhost:8090/ws
         registry.addEndpoint("/ws").setAllowedOriginPatterns("*").withSockJS();
     }
 

@@ -1,6 +1,8 @@
 package com.example.back.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,10 +24,10 @@ public class ChatRoom extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String sellerStatus; //판매 유저 기준 N : 삭제 방 Y : 있는 방
+    private String sellerStatus; //판매 유저 기준 (N : 삭제 방 Y : 있는 방)
 
     @Column(nullable = false)
-    private String buyerStatus; //구매 유저 기준 N : 삭제 방 Y : 있는 방
+    private String buyerStatus; //구매 유저 기준 (N : 삭제 방 Y : 있는 방)
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn
@@ -38,4 +40,17 @@ public class ChatRoom extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")
     private Product product;
+
+    @Builder
+    public static ChatRoom createChatRoom(User sellUser, User buyUser, Product product) {
+
+        ChatRoom chatRoom;
+        chatRoom = ChatRoom.builder()
+                .sellUser(sellUser)
+                .buyUser(buyUser)
+                .product(product)
+                .build();
+
+        return chatRoom;
+    }
 }
