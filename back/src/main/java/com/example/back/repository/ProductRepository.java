@@ -50,4 +50,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
             "WHERE p.pdTitle LIKE %:productTitle% " +
             "ORDER BY p.regTime DESC")
     Slice<Product> findProductsByProductName(String productTitle, Pageable pageable);
+
+    @Query(value = "select p.user from Product p where p.id = :id")
+    User findByUserId(Long id);
 }
