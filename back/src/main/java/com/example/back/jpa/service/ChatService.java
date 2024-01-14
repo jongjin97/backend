@@ -4,6 +4,7 @@ package com.example.back.jpa.service;
 import com.example.back.config.auth.PrincipalDetail;
 import com.example.back.dto.ChatListDto;
 import com.example.back.dto.ChatMessageDto;
+import com.example.back.dto.ChatRoomDto;
 import com.example.back.entity.ChatMessage;
 import com.example.back.entity.ChatRoom;
 import com.example.back.entity.Product;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -105,4 +107,9 @@ public class ChatService {
         chatMessageRepository.
     }*/
 
+    public List<ChatRoomDto> findChatRoomList(Long id){
+
+        List<ChatRoomDto> chatRoomDtoList = chatRoomRepository.findChatRoomList(id);
+        return chatRoomDtoList;
+    }
 }

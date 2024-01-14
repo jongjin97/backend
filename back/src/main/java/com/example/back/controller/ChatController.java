@@ -1,8 +1,6 @@
 package com.example.back.controller;
 
 import com.example.back.config.auth.PrincipalDetail;
-import com.example.back.dto.ChatRoomDto;
-import com.example.back.entity.ChatMessage;
 import com.example.back.entity.User;
 import com.example.back.jpa.service.ChatService;
 import lombok.RequiredArgsConstructor;

@@ -3,9 +3,8 @@ package com.example.back.controller;
 
 import com.example.back.config.auth.PrincipalDetail;
 import com.example.back.dto.ChatListDto;
-import com.example.back.dto.ChatMessageDto;
 import com.example.back.dto.ChatRoomDto;
-import com.example.back.entity.ChatMessage;
+import com.example.back.entity.ChatRoom;
 import com.example.back.jpa.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -32,5 +31,11 @@ public class ChatRoomController {
     public Long createRoom(@PathVariable Long productId, @AuthenticationPrincipal PrincipalDetail principalDetail) {
 
         return chatService.createRoom(productId, principalDetail);
+    }
+
+    @GetMapping("/chatroom")
+    public List<ChatRoomDto> getChatRoomList(@AuthenticationPrincipal PrincipalDetail principalDetail){
+        return chatService.findChatRoomList(principalDetail.getId());
+
     }
 }
