@@ -14,7 +14,6 @@ import javax.persistence.OneToOne;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Builder
 public class ChatRoomDto {
 
@@ -27,4 +26,13 @@ public class ChatRoomDto {
 
     private MainProductDto product;
 
+    @QueryProjection
+    public ChatRoomDto(Long chatRoomId, String sellerStatus, String buyerStatus, ResponseUserDto sellUser, ResponseUserDto buyUser, MainProductDto product) {
+        this.chatRoomId = chatRoomId;
+        this.sellerStatus = sellerStatus;
+        this.buyerStatus = buyerStatus;
+        this.sellUser = sellUser;
+        this.buyUser = buyUser;
+        this.product = product;
+    }
 }
