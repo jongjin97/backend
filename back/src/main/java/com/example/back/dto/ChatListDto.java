@@ -31,4 +31,10 @@ public class ChatListDto {
         this.buyUser = buyUser;
         this.sellUser = sellUser;
     }
+
+    public ChatListDto(String message, LocalDateTime sendTime, Long userId){
+        this.message = message;
+        this.sendTime = sendTime;
+        this.userId = userId;
+    }
 }

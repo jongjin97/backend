@@ -1,6 +1,7 @@
 package com.example.back.controller;
 
 import com.example.back.config.auth.PrincipalDetail;
+import com.example.back.dto.ChatListDto;
 import com.example.back.entity.User;
 import com.example.back.jpa.service.ChatService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequiredArgsConstructor
 public class ChatController {
@@ -21,16 +24,15 @@ public class ChatController {
 
     @MessageMapping("/{roomId}")
     @SendTo("/sub/{roomId}")
-    public String sendMessage(@DestinationVariable Long roomId, @Payload String message
+    public ChatListDto sendMessage(@DestinationVariable Long roomId, @Payload String message
             , SimpMessageHeaderAccessor headerAccessor/*, @AuthenticationPrincipal PrincipalDetail principalDetail*/) {
         Authentication authentication = (Authentication) headerAccessor.getUser();
         PrincipalDetail principalDetail = (PrincipalDetail) authentication.getPrincipal();
         User user = principalDetail.getUser();
-        User user2 = ((PrincipalDetail) authentication.getPrincipal()).getUser();
 
         chatService.createChatMessage(roomId, message, principalDetail);
-
-        return message;
+        ChatListDto chatListDto = new ChatListDto(message, LocalDateTime.now(), user.getId());
+        return chatListDto;
     }
 
     /*@MessageMapping("/{roomId}")
