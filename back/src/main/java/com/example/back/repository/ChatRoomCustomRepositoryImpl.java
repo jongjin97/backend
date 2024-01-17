@@ -20,6 +20,7 @@ public class ChatRoomCustomRepositoryImpl implements ChatRoomCustomRepository{
     public List<ChatRoomDto> findChatRoomList(Long userId){
         QChatRoom chatRoom = QChatRoom.chatRoom;
         QProductImage productImage = QProductImage.productImage;
+        QUser user = QUser.user;
         // Userinfo query2개 생김
         return queryFactory.select(new QChatRoomDto(chatRoom.id, chatRoom.sellerStatus, chatRoom.buyerStatus
                         , new QResponseUserDto(chatRoom.sellUser)
@@ -30,9 +31,12 @@ public class ChatRoomCustomRepositoryImpl implements ChatRoomCustomRepository{
                 , chatRoom.product.pdCategory
                 , productImage.imgUrl
                 , chatRoom.product.price
-                , chatRoom.product.status)))
+                , chatRoom.product.status
+                        , user.id
+                        , user.nickname)))
                 .from(chatRoom)
                 .join(chatRoom.product.productImages, productImage)
+                .join(chatRoom.product.user, user)
                 .where(chatRoom.sellUser.id.eq(userId).or(chatRoom.buyUser.id.eq(userId)))
                 .where(productImage.repImgYn.eq("Y"))
                 .fetch();

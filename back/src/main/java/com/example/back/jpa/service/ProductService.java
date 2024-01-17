@@ -78,27 +78,28 @@ public class ProductService {
 
     //상품 조회
     @Transactional//(readOnly = true)
-    public ProductDto getProductList(Long productId, PrincipalDetail principalDetail) {
+    public MainProductDto getProductList(Long productId, PrincipalDetail principalDetail) {
 
-        List<ProductImage> productImageList = productImageRepository.findByProductIdOrderByIdAsc(productId);
-
-        System.out.println("productImageList = " + productImageList);
-        List<ProductImageDto> productImageDtoList = new ArrayList<>();
-
-        for(ProductImage productImage : productImageList) {
-
-            ProductImageDto productImageDto = ProductImageDto.of(productImage);
-            productImageDtoList.add(productImageDto);
-        }
-
-        Product product = productRepository.findById(productId).orElseThrow(EntityNotFoundException::new);
-        ProductDto productDto = ProductDto.of(product);
-        productDto.setProductImageDtoList(productImageDtoList);
+//        List<ProductImage> productImageList = productImageRepository.findByProductIdOrderByIdAsc(productId);
+//
+//        System.out.println("productImageList = " + productImageList);
+//        List<ProductImageDto> productImageDtoList = new ArrayList<>();
+//
+//        for(ProductImage productImage : productImageList) {
+//
+//            ProductImageDto productImageDto = ProductImageDto.of(productImage);
+//            productImageDtoList.add(productImageDto);
+//        }
+//
+//        ProductDto productDto = ProductDto.of(product);
+//        productDto.setProductImageDtoList(productImageDtoList);
+        MainProductDto mainProductDto = productRepository.findProductAndImgUrlById(productId);
 
         if(principalDetail != null){
-               selectProductService.saveSelectProduct(product, principalDetail.getUser());
+            Product product = productRepository.findById(productId).orElseThrow(EntityNotFoundException::new);
+            selectProductService.saveSelectProduct(product, principalDetail.getUser());
         }
-        return productDto;
+        return mainProductDto;
     }
 
     @Transactional

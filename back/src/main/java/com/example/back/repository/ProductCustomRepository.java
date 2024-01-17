@@ -12,4 +12,6 @@ public interface ProductCustomRepository {
     List<MainProductDto> findAllProductByUser(Long id);
 
     List<MainProductDto> findCategoryProduct(String pdCategory);
+
+    MainProductDto findProductAndImgUrlById(Long id);
 }
