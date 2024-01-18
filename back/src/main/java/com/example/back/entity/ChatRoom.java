@@ -42,15 +42,18 @@ public class ChatRoom extends BaseEntity {
     private Product product;
 
     @Builder
-    public static ChatRoom createChatRoom(User sellUser, User buyUser, Product product) {
+    public ChatRoom(User sellUser, User buyUser, Product product) {
 
-        ChatRoom chatRoom;
-        chatRoom = ChatRoom.builder()
-                .sellUser(sellUser)
-                .buyUser(buyUser)
-                .product(product)
-                .build();
-
-        return chatRoom;
+//        ChatRoom chatRoom;
+//        chatRoom = ChatRoom.builder()
+//                .sellUser(sellUser)
+//                .buyUser(buyUser)
+//                .product(product)
+//                .build();
+        this.sellUser = sellUser;
+        this.buyUser = buyUser;
+        this.product = product;
+        this.buyerStatus="Y";
+        this.sellerStatus="Y";
     }
 }

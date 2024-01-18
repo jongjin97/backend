@@ -43,4 +43,30 @@ public class ChatRoomCustomRepositoryImpl implements ChatRoomCustomRepository{
 
 
     }
+
+    @Override
+    public ChatRoomDto findChatRoom(Long chatId) {
+        QChatRoom chatRoom = QChatRoom.chatRoom;
+        QProductImage productImage = QProductImage.productImage;
+        QUser user = QUser.user;
+        // Userinfo query2개 생김
+        return queryFactory.select(new QChatRoomDto(chatRoom.id, chatRoom.sellerStatus, chatRoom.buyerStatus
+                        , new QResponseUserDto(chatRoom.sellUser)
+                        , new QResponseUserDto(chatRoom.buyUser)
+                        , new QMainProductDto(chatRoom.product.id
+                        , chatRoom.product.pdTitle
+                        , chatRoom.product.pdContents
+                        , chatRoom.product.pdCategory
+                        , productImage.imgUrl
+                        , chatRoom.product.price
+                        , chatRoom.product.status
+                        , user.id
+                        , user.nickname)))
+                .from(chatRoom)
+                .join(chatRoom.product.productImages, productImage)
+                .join(chatRoom.product.user, user)
+                .where(chatRoom.id.eq(chatId))
+                .where(productImage.repImgYn.eq("Y"))
+                .fetchOne();
+    }
 }
