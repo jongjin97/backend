@@ -40,8 +40,11 @@ public class ChatRoomController {
     }
     @GetMapping("/chatroom/{chatId}")
     public ChatRoomDto getChatRoom(@AuthenticationPrincipal PrincipalDetail principalDetail, @PathVariable Long chatId){
-        System.out.println();
         return chatService.findChatRoom(chatId);
-
+    }
+    @GetMapping("/chatroom/product/{productId}")
+    public ChatRoomDto getChatRoomByProductId(@AuthenticationPrincipal PrincipalDetail principalDetail
+            , @PathVariable Long productId){
+        return chatService.findChatRoomByBuyUserIdAndProductId(principalDetail.getId(), productId);
     }
 }

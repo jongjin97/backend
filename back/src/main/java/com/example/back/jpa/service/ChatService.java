@@ -123,4 +123,8 @@ public class ChatService {
         ChatRoomDto chatRoomDto = chatRoomRepository.findChatRoom(chatId);
         return chatRoomDto;
     }
+    public ChatRoomDto findChatRoomByBuyUserIdAndProductId(Long userId, Long productId){
+        ChatRoomDto chatRoomDto = chatRoomRepository.findChatRoomByBuyUserIdAndProductId(userId, productId);
+        return chatRoomDto;
+    }
 }
