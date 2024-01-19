@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface BoardRepository extends JpaRepository<Board, Long> {
+public interface BoardRepository extends JpaRepository<Board, Long>, BoardCustomRepository {
     Optional<Board> findByUserAndRegion(User user, Region region);
 
     Optional<List<Board>> findAllByUser(User user);
