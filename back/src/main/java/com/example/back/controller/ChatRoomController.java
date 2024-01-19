@@ -28,14 +28,23 @@ public class ChatRoomController {
 
     // 채팅방 생성
     @PostMapping("/createroom/{productId}")
-    public Long createRoom(@PathVariable Long productId, @AuthenticationPrincipal PrincipalDetail principalDetail) {
-
-        return chatService.createRoom(productId, principalDetail);
+    public Long createRoom(@PathVariable Long productId, @AuthenticationPrincipal PrincipalDetail principalDetail
+            ,@RequestBody String message) {
+        return chatService.createRoom(productId, principalDetail, message);
     }
 
     @GetMapping("/chatroom")
     public List<ChatRoomDto> getChatRoomList(@AuthenticationPrincipal PrincipalDetail principalDetail){
         return chatService.findChatRoomList(principalDetail.getId());
 
+    }
+    @GetMapping("/chatroom/{chatId}")
+    public ChatRoomDto getChatRoom(@AuthenticationPrincipal PrincipalDetail principalDetail, @PathVariable Long chatId){
+        return chatService.findChatRoom(chatId);
+    }
+    @GetMapping("/chatroom/product/{productId}")
+    public ChatRoomDto getChatRoomByProductId(@AuthenticationPrincipal PrincipalDetail principalDetail
+            , @PathVariable Long productId){
+        return chatService.findChatRoomByBuyUserIdAndProductId(principalDetail.getId(), productId);
     }
 }

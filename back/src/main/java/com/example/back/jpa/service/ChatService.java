@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,8 +66,8 @@ public class ChatService {
 
         chatMessageRepository.deleteById(channelId);
     }
-
-    public Long createRoom(Long productId, PrincipalDetail principalDetail) {
+    @Transactional
+    public Long createRoom(Long productId, PrincipalDetail principalDetail, String message) {
 
         //구매 유저 조회
         User buyUser = userRepository.findById(principalDetail.getId())
@@ -79,11 +80,16 @@ public class ChatService {
         //판매자 상품 id로 판매자 User id 조회
         User sellUser = productRepository.findByUserId(product.getId());
 
-        ChatRoom chatRoom = ChatRoom.createChatRoom(sellUser, buyUser, product);
+        ChatRoom chatRoom = ChatRoom.builder()
+                .sellUser(sellUser)
+                .buyUser(buyUser)
+                .product(product)
+                .build();
+        chatRoom = chatRoomRepository.save(chatRoom);
+        ChatMessage chatMessage = ChatMessage.createChatMessage(chatRoom, message, buyUser);
+        chatMessageRepository.save(chatMessage);
 
-        chatRoomRepository.save(chatRoom);
-
-        return productId;
+        return chatRoom.getId();
     }
 
     public void createChatMessage(Long roomId, String message, PrincipalDetail principalDetail) {
@@ -111,5 +117,14 @@ public class ChatService {
 
         List<ChatRoomDto> chatRoomDtoList = chatRoomRepository.findChatRoomList(id);
         return chatRoomDtoList;
+    }
+    public ChatRoomDto findChatRoom(Long chatId){
+
+        ChatRoomDto chatRoomDto = chatRoomRepository.findChatRoom(chatId);
+        return chatRoomDto;
+    }
+    public ChatRoomDto findChatRoomByBuyUserIdAndProductId(Long userId, Long productId){
+        ChatRoomDto chatRoomDto = chatRoomRepository.findChatRoomByBuyUserIdAndProductId(userId, productId);
+        return chatRoomDto;
     }
 }

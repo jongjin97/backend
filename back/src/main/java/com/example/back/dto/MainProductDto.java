@@ -16,8 +16,11 @@ public class MainProductDto {
     private String imgUrl; //이미지 경로
     private String price; //가격
     private String pdStatus; //상품 상태
+    private Long user_id;
+    private String user_nickname;
     @QueryProjection
-    public MainProductDto(Long product_id, String pdTitle, String pdContents, String pdCategory, String imgUrl, String price, String pdStatus) {
+    public MainProductDto(Long product_id, String pdTitle, String pdContents, String pdCategory, String imgUrl
+            , String price, String pdStatus, Long user_id, String user_nickname) {
         this.product_id = product_id;
         this.pdTitle = pdTitle;
         this.pdContents = pdContents;
@@ -25,5 +28,7 @@ public class MainProductDto {
         this.imgUrl = imgUrl;
         this.price = price;
         this.pdStatus = pdStatus;
+        this.user_id = user_id;
+        this.user_nickname = user_nickname;
     }
 }
