@@ -241,6 +241,27 @@ public class ProductService {
         return responseProductSlice;
     }
 
+    //상품 상세 조회
+    @Transactional(readOnly = true)
+    public ProductDto getProductDetail(Long productId) {
+
+        List<ProductImage> productImageList = productImageRepository.findByProductIdOrderByIdAsc(productId);
+        List<ProductImageDto> productImageDtoList = new ArrayList<>();
+
+        for(ProductImage productImage : productImageList) {
+
+            ProductImageDto productImageDto = ProductImageDto.of(productImage);
+            productImageDtoList.add(productImageDto);
+        }
+
+        Product product = productRepository.findById(productId).orElseThrow(EntityNotFoundException::new);
+        ProductDto productDto = ProductDto.of(product);
+        productDto.setProductImageDtoList(productImageDtoList);
+
+        return productDto;
+    }
+
+    //전체 상품 조회
     @Transactional
     public List<MainProductDto> getAllProduct(ProductSearchDto productSearchDto) {
 
@@ -309,5 +330,4 @@ public class ProductService {
         productRepository.save(newProduct);
 
     }
-
 }
