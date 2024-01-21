@@ -10,4 +10,6 @@ public interface BoardImageRepository extends JpaRepository<BoardImage, Long> {
 
     @Query(value = "select bi.id from BoardImage bi where bi.board.id = :id")
     List<Long> countById(Long id);
+
+    List<BoardImage> findByBoardIdOrderByIdAsc(Long boardId);
 }

@@ -1,17 +1,14 @@
 package com.example.back.dto;
-
-import com.example.back.constant.Role;
 import com.example.back.entity.User;
 import com.example.back.entity.UserInfo;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.modelmapper.ModelMapper;
 
 import java.util.Date;
 
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -27,6 +24,8 @@ public class UserInfoDto {
 
     private User user;
 
+    private static ModelMapper modelMapper = new ModelMapper();
+
     public UserInfoDto(String phoneNum, String usrNickName, String imgUrl) {
         this.phoneNum = phoneNum;
         this.usrNickName = usrNickName;
@@ -40,5 +39,9 @@ public class UserInfoDto {
                 .status("Y")
                 .user(user)
                 .build();
+    }
+
+    public static UserInfoDto of(UserInfo userInfo) {
+        return modelMapper.map(userInfo, UserInfoDto.class);
     }
 }

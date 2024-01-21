@@ -3,28 +3,29 @@ package com.example.back.jpa.service;
 import com.example.back.config.auth.PrincipalDetail;
 import com.example.back.dto.*;
 import com.example.back.entity.*;
-import com.example.back.repository.BoardImageRepository;
-import com.example.back.repository.BoardRepository;
-import com.example.back.repository.RegionRepository;
-import com.example.back.repository.UserRepository;
+import com.example.back.repository.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
     private final RegionRepository regionRepository;
     private final BoardImageRepository boardImageRepository;
     private final BoardImageService boardImageService;
+    private final UserInfoRepository userInfoRepository;
 
     @Transactional
     public Long createBoard(BoardDto boardDto, List<MultipartFile> boardImgFileList, PrincipalDetail principalDetail) throws Exception {
@@ -113,5 +114,36 @@ public class BoardService {
         List<MainBoardDto> boardDtoList = boardRepository.findAllBoardAndImgUrl(productSearchDto);
 
         return boardDtoList;
+    }
+
+    @Transactional(readOnly = true)
+    public BoardDetailDto getBoardDetail(Long boardId) {
+
+        Board board = boardRepository.findById(boardId).orElseThrow(EntityNotFoundException::new);
+
+        List<BoardImage> boardImageList = boardImageRepository.findByBoardIdOrderByIdAsc(boardId);
+        List<BoardImageDto> boardImageDtoList = new ArrayList<>();
+
+        for(BoardImage boardImage : boardImageList) {
+
+            BoardImageDto boardImageDto = BoardImageDto.of(boardImage);
+            boardImageDtoList.add(boardImageDto);
+        }
+
+        List<UserInfo> userInfoList = userInfoRepository.findByUser_UserInfo(board.getUser().getUserInfo().getId());
+
+        List<RequestUserInfoDto> userInfoDtoList = new ArrayList<>();
+
+        for(UserInfo userInfo : userInfoList) {
+            RequestUserInfoDto userInfoDto = RequestUserInfoDto.of(userInfo);
+            userInfoDtoList.add(userInfoDto);
+        }
+
+
+        BoardDetailDto boardDetailDto = BoardDetailDto.of(board);
+        boardDetailDto.setBoardImageDtoList(boardImageDtoList);
+        boardDetailDto.setUserInfoDtoList(userInfoDtoList);
+
+        return boardDetailDto;
     }
 }

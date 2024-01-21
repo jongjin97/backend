@@ -25,6 +25,12 @@ public class BoardController {
         return boardService.getAllBoard(productSearchDto);
     }
 
+    //게시판 상세조회
+    @GetMapping("/detail/{boardId}")
+    public BoardDetailDto getBoardDetail(@PathVariable Long boardId) {
+        return boardService.getBoardDetail(boardId);
+    }
+
     @PostMapping("/new") //board 생성
     public Long createBoard(@RequestPart BoardDto boardDto, @RequestPart List<MultipartFile> boardImgFileList,
                                       @AuthenticationPrincipal PrincipalDetail principalDetail) throws Exception {
