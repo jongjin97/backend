@@ -54,6 +54,13 @@ public class ProductController {
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
+    //상품 상세 조회
+    @GetMapping("/detail/{productId}")
+    public ProductDto getProductDetail(@PathVariable Long productId) {
+
+        return productService.getProductDetail(productId);
+    }
+
     //전체 상품 조회
     @GetMapping("/list")
     public ResponseEntity<?> findAllItem(ProductSearchDto productSearchDto) {

@@ -1,5 +1,6 @@
 package com.example.back.entity;
 
+import com.example.back.dto.BoardDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
@@ -45,7 +46,7 @@ public class Board extends BaseEntity {
     @JsonIgnore
     private Region region; //게시판 등록 지역
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BoardImage> boardImages = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, orphanRemoval = true)
@@ -58,5 +59,11 @@ public class Board extends BaseEntity {
         this.bdContents = bdContents;
         this.user = user;
         this.region = region;
+    }
+
+    public void updateBoard(BoardDto boardDto) {
+        this.status = boardDto.getStatus();
+        this.bdSubject = boardDto.getBdSubject();
+        this.bdContents = boardDto.getBdContents();
     }
 }
