@@ -27,6 +27,7 @@ public class BoardDetailDto {
     private static ModelMapper modelMapper = new ModelMapper();
     private List<BoardImageDto> boardImageDtoList = new ArrayList<>();
     private List<RequestUserInfoDto> userInfoDtoList = new ArrayList<>();
+    private List<RegionDto> regionDtoList = new ArrayList<>();
 
     public static BoardDetailDto of(Board board) {
         return modelMapper.map(board, BoardDetailDto.class);

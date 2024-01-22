@@ -16,4 +16,7 @@ public interface RegionRepository extends JpaRepository<Region, Long> {
 
     @Query(value = "select r from Region r where r.user.id = :id")
     Region findByRegionId(Long id);
+
+    @Query(value = "select r from Region r where r.id = :id")
+    List<Region> findByRegion(Long id);
 }

@@ -131,7 +131,6 @@ public class BoardService {
         }
 
         List<UserInfo> userInfoList = userInfoRepository.findByUser_UserInfo(board.getUser().getUserInfo().getId());
-
         List<RequestUserInfoDto> userInfoDtoList = new ArrayList<>();
 
         for(UserInfo userInfo : userInfoList) {
@@ -139,10 +138,18 @@ public class BoardService {
             userInfoDtoList.add(userInfoDto);
         }
 
+        List<Region> regionList = regionRepository.findByRegion(board.getRegion().getId());
+        List<RegionDto> regionDtoList = new ArrayList<>();
+
+        for(Region region : regionList) {
+            RegionDto regionDto = RegionDto.of(region);
+            regionDtoList.add(regionDto);
+        }
 
         BoardDetailDto boardDetailDto = BoardDetailDto.of(board);
         boardDetailDto.setBoardImageDtoList(boardImageDtoList);
         boardDetailDto.setUserInfoDtoList(userInfoDtoList);
+        boardDetailDto.setRegionDtoList(regionDtoList);
 
         return boardDetailDto;
     }

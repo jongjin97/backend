@@ -1,16 +1,14 @@
 package com.example.back.dto;
 
+
 import com.example.back.entity.Region;
 import com.example.back.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.modelmapper.ModelMapper;
 
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 @Getter
 @Setter
@@ -36,5 +34,10 @@ public class RegionDto {
         this.regionName = region.getRegionName();
         this.leadStatus = region.getLeadStatus();
         this.noticeStatus = region.getNoticeStatus();
+    }
+
+    private static ModelMapper modelMapper = new ModelMapper();
+    public static RegionDto of(Region region) {
+        return modelMapper.map(region, RegionDto.class);
     }
 }
