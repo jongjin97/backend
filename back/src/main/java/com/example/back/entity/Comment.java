@@ -1,6 +1,7 @@
 package com.example.back.entity;
 
 
+import com.example.back.dto.UserInfoDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -40,5 +41,9 @@ public class Comment extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "user_info_id")
+    private UserInfo userInfo;
 
 }

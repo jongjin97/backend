@@ -6,11 +6,13 @@
 
     <!-- 댓글 조회 -->
     <select id="selectComment" resultType="hashmap">
-        SELECT c.contents, u.nickname, c.update_time
+        SELECT c.contents, u.nickname, c.update_time, ui.img_url
         FROM board b
         INNER JOIN comment c ON b.board_id = c.board_id
         INNER JOIN user u ON u.user_id = c.user_id
-        WHERE b.board_id = #{id};
+        INNER JOIN user_info ui ON u.user_id = ui.user_id
+        WHERE b.board_id = #{id}
+        ORDER BY c.update_time ASC;
     </select>
 
     <!-- 댓글 추가 -->
@@ -23,6 +25,7 @@
         , status
         , board_id
         , user_id
+        , user_info_id
         )
         VALUES ( now()
         , now()
@@ -32,6 +35,7 @@
         , 'Y'
         , #{Com.board}
         , #{Pri.id}
+        , (SELECT user_info_id FROM user_info WHERE user_id = #{Pri.id})
         )
     </insert>
 
