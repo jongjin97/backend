@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/comment")
@@ -19,9 +21,16 @@ public class CommentController {
 
     //댓글 조회
     @GetMapping("/list/{id}")
-    public List<CommentDto> listNotice(@PathVariable Long id) {
+    public List<CommentDto> listComment(@PathVariable Long id) {
         return commentMapper.selectComment(id);
     }
+
+    //대댓글 조회
+    @GetMapping("/list/reply/{id}")
+    public  List<CommentDto> listReplyComment(@RequestParam String commentGroup, @PathVariable Long id) {
+        return commentMapper.selectReplyComment(commentGroup, id);
+    }
+
 
     //댓글 추가
     @PostMapping("/new")
@@ -32,6 +41,8 @@ public class CommentController {
     //대댓글 추가
     @PostMapping("/renew")
     public void postReplyComment(@Valid @RequestBody CommentDto commentDto, @AuthenticationPrincipal PrincipalDetail principalDetail) {
+        System.out.println("commentDto.getCommentGroup() = " + commentDto.getCommentGroup());
+        
         commentMapper.createReplyComment(commentDto, principalDetail);
     }
 
