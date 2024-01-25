@@ -19,4 +19,5 @@ public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
 
     @Query(value = "select ui from UserInfo ui where ui.id = :id")
     List<UserInfo> findByUser_UserInfo(Long id);
+
 }

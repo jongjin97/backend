@@ -9,6 +9,7 @@ import com.example.back.entity.User;
 import com.example.back.entity.*;
 import com.example.back.mybatis.mapper.PurchaseHistoryMapper;
 import com.example.back.repository.*;
+import com.nimbusds.openid.connect.sdk.UserInfoRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -35,6 +36,8 @@ public class ProductService {
     private final PurchaseHistoryMapper purchaseHistoryMapper;
     private final ProductImageService productImageService;
     private final SelectProductService selectProductService;
+    private final UserInfoRepository userInfoRepository;
+
     @Transactional
     public Long createProduct(ProductDto productDto, List<MultipartFile> productImgFileList, PrincipalDetail principalDetail) throws Exception {
 
@@ -255,8 +258,18 @@ public class ProductService {
         }
 
         Product product = productRepository.findById(productId).orElseThrow(EntityNotFoundException::new);
+
+        List<UserInfo> userInfoList = userInfoRepository.findByUser_UserInfo(product.getUser().getUserInfo().getId());
+        List<RequestUserInfoDto> userInfoDtoList = new ArrayList<>();
+
+        for(UserInfo userInfo : userInfoList) {
+            RequestUserInfoDto userInfoDto = RequestUserInfoDto.of(userInfo);
+            userInfoDtoList.add(userInfoDto);
+        }
+
         ProductDto productDto = ProductDto.of(product);
         productDto.setProductImageDtoList(productImageDtoList);
+        productDto.setUserInfoDtoList(userInfoDtoList);
 
         return productDto;
     }

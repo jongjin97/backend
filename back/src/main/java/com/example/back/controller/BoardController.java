@@ -25,6 +25,12 @@ public class BoardController {
         return boardService.getAllBoard(productSearchDto);
     }
 
+    //user 가 올린 게시글 조회
+    @GetMapping("/user")
+    public List<MainBoardDto> getBoardUser(@AuthenticationPrincipal PrincipalDetail principalDetail) {
+        return boardService.getBoardUser(principalDetail);
+    }
+
     //게시판 상세조회
     @GetMapping("/detail/{boardId}")
     public BoardDetailDto getBoardDetail(@PathVariable Long boardId) {

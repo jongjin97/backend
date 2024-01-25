@@ -3,6 +3,7 @@ package com.example.back.dto;
 import com.example.back.entity.Product;
 import com.example.back.entity.Region;
 import com.example.back.entity.User;
+import com.nimbusds.openid.connect.sdk.UserInfoRequest;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 
@@ -40,6 +41,7 @@ public class ProductDto {
     private static ModelMapper modelMapper = new ModelMapper();
     private List<Long> productImgIds = new ArrayList<>();
     private List<ProductImageDto> productImageDtoList = new ArrayList<>();
+    private List<RequestUserInfoDto> userInfoDtoList = new ArrayList<>();
 
     public ProductDto(Product product, Region region, User user) {
         this.userId = user.getId();

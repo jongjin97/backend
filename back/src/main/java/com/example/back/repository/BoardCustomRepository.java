@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface BoardCustomRepository {
     List<MainBoardDto> findAllBoardAndImgUrl(ProductSearchDto productSearchDto);
+
+    List<MainBoardDto> findUserBoardAndImgUrl(Long id);
 }

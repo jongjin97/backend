@@ -153,4 +153,12 @@ public class BoardService {
 
         return boardDetailDto;
     }
+
+    @Transactional(readOnly = true)
+    public List<MainBoardDto> getBoardUser(PrincipalDetail principalDetail) {
+
+        List<MainBoardDto> boardDtoList = boardRepository.findUserBoardAndImgUrl(principalDetail.getId());
+
+        return boardDtoList;
+    }
 }
