@@ -267,9 +267,18 @@ public class ProductService {
             userInfoDtoList.add(userInfoDto);
         }
 
+        List<Region> regionList = regionRepository.findByRegion(product.getRegion().getId());
+        List<RegionDto> regionDtoList = new ArrayList<>();
+
+        for(Region region : regionList) {
+            RegionDto regionDto = RegionDto.of(region);
+            regionDtoList.add(regionDto);
+        }
+
         ProductDto productDto = ProductDto.of(product);
         productDto.setProductImageDtoList(productImageDtoList);
         productDto.setUserInfoDtoList(userInfoDtoList);
+        productDto.setRegionDtoList(regionDtoList);
 
         return productDto;
     }
