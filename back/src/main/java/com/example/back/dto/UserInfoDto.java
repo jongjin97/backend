@@ -36,6 +36,7 @@ public class UserInfoDto {
         return UserInfo.builder()
                 .phoneNum(phoneNum)
                 .usrNickName(user.getNickname())
+                .imgUrl("/images/user/profile.png")
                 .status("Y")
                 .user(user)
                 .build();

@@ -40,15 +40,20 @@ public class UserService {
 
         //이메일 중복 검사
         validateDuplicateMember(user);
+        userRepository.save(user);
+
+        User findUser = userRepository.findById(user.getId()).orElseThrow(EntityNotFoundException::new);
+
         UserInfo userInfo = UserInfoDto.builder()
                 .phoneNum("")
                 .usrNickName(userDto.getNickname())
-                .user(user)
+                .user(findUser)
                 .build().toEntity();
+
 
         userInfoRepository.save(userInfo);
 
-        return userRepository.save(user);
+        return user;
     }
 
     //계정 정보 수정
