@@ -2,9 +2,8 @@ package com.example.back.controller;
 
 
 import com.example.back.config.auth.PrincipalDetail;
-import com.example.back.dto.ChatListDto;
-import com.example.back.dto.ChatRoomDto;
-import com.example.back.entity.ChatRoom;
+import com.example.back.dto.*;
+import com.example.back.entity.ChatMessage;
 import com.example.back.jpa.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -34,10 +33,11 @@ public class ChatRoomController {
     }
 
     @GetMapping("/chatroom")
-    public List<ChatRoomDto> getChatRoomList(@AuthenticationPrincipal PrincipalDetail principalDetail){
+    public List<ChatMessageListDto> getChatRoomList(@AuthenticationPrincipal PrincipalDetail principalDetail){
         return chatService.findChatRoomList(principalDetail.getId());
 
     }
+
     @GetMapping("/chatroom/{chatId}")
     public ChatRoomDto getChatRoom(@AuthenticationPrincipal PrincipalDetail principalDetail, @PathVariable Long chatId){
         return chatService.findChatRoom(chatId);

@@ -1,10 +1,8 @@
 package com.example.back.repository;
 
-import com.example.back.dto.ChatRoomDto;
-import com.example.back.dto.QChatRoomDto;
-import com.example.back.dto.QMainProductDto;
-import com.example.back.dto.QResponseUserDto;
+import com.example.back.dto.*;
 import com.example.back.entity.*;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -17,12 +15,13 @@ public class ChatRoomCustomRepositoryImpl implements ChatRoomCustomRepository{
 
     private final JPAQueryFactory queryFactory;
     @Override
-    public List<ChatRoomDto> findChatRoomList(Long userId){
+    public List<ChatMessageListDto> findChatRoomList(Long userId){
         QChatRoom chatRoom = QChatRoom.chatRoom;
         QProductImage productImage = QProductImage.productImage;
+        QChatMessage chatMessage = QChatMessage.chatMessage;
         QUser user = QUser.user;
         // Userinfo query2개 생김
-        return queryFactory.select(new QChatRoomDto(chatRoom.id, chatRoom.sellerStatus, chatRoom.buyerStatus
+        return queryFactory.select(new QChatMessageListDto(chatRoom.id, chatRoom.sellerStatus, chatRoom.buyerStatus
                         , new QResponseUserDto(chatRoom.sellUser)
                         , new QResponseUserDto(chatRoom.buyUser)
                         , new QMainProductDto(chatRoom.product.id
@@ -32,13 +31,26 @@ public class ChatRoomCustomRepositoryImpl implements ChatRoomCustomRepository{
                 , productImage.imgUrl
                 , chatRoom.product.price
                 , chatRoom.product.status
-                        , user.id
-                        , user.nickname)))
-                .from(chatRoom)
-                .join(chatRoom.product.productImages, productImage)
-                .join(chatRoom.product.user, user)
+                        , chatRoom.product.user.id
+                        , chatRoom.product.user.nickname)
+                        , new QChatMessageRequestDto(
+                        chatMessage.id,
+                        chatMessage.chatRoom.id,
+                        chatMessage.message,
+                        chatMessage.sendTime,
+                        chatMessage.user.id
+                )))
+                .from(chatMessage)
+                .join(chatMessage.chatRoom.product.productImages, productImage)
+                .join(chatMessage.chatRoom, chatRoom)
+                .join(chatMessage.user, user)
                 .where(chatRoom.sellUser.id.eq(userId).or(chatRoom.buyUser.id.eq(userId)))
                 .where(productImage.repImgYn.eq("Y"))
+                .where(chatMessage.id.in(
+                        JPAExpressions
+                                .select(chatMessage.id.max())
+                                .from(chatMessage)
+                                .groupBy(chatMessage.chatRoom.id)))
                 .fetch();
 
 

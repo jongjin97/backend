@@ -2,9 +2,7 @@ package com.example.back.jpa.service;
 
 
 import com.example.back.config.auth.PrincipalDetail;
-import com.example.back.dto.ChatListDto;
-import com.example.back.dto.ChatMessageDto;
-import com.example.back.dto.ChatRoomDto;
+import com.example.back.dto.*;
 import com.example.back.entity.ChatMessage;
 import com.example.back.entity.ChatRoom;
 import com.example.back.entity.Product;
@@ -113,9 +111,9 @@ public class ChatService {
         chatMessageRepository.
     }*/
 
-    public List<ChatRoomDto> findChatRoomList(Long id){
+    public List<ChatMessageListDto> findChatRoomList(Long id){
 
-        List<ChatRoomDto> chatRoomDtoList = chatRoomRepository.findChatRoomList(id);
+        List<ChatMessageListDto> chatRoomDtoList = chatRoomRepository.findChatRoomList(id);
         return chatRoomDtoList;
     }
     public ChatRoomDto findChatRoom(Long chatId){
