@@ -6,19 +6,19 @@
 
     <!-- 댓글 조회 -->
     <select id="selectComment" resultType="hashmap">
-        SELECT c.user_id, c.contents, u.nickname, c.update_time, ui.img_url, c.comment_group
+        SELECT c.comment_id , c.user_id, c.contents, u.nickname, c.update_time, ui.img_url, c.comment_group
         FROM board b
         INNER JOIN comment c ON b.board_id = c.board_id
         INNER JOIN user u ON u.user_id = c.user_id
         INNER JOIN user_info ui ON u.user_id = ui.user_id
         WHERE b.board_id = #{id}
         AND c.cmlayer = 0
-        ORDER BY c.update_time ASC;
+        ORDER BY c.reg_time ASC;
     </select>
 
     <!-- 대댓글 조회 -->
     <select id="selectReplyComment" resultType="hashmap">
-        SELECT c.contents, u.nickname, c.update_time, ui.img_url, c.comment_group
+        SELECT c.user_id, c.comment_id, c.contents, u.nickname, c.update_time, ui.img_url, c.comment_group
         FROM board b
         INNER JOIN comment c ON b.board_id = c.board_id
         INNER JOIN user u ON u.user_id = c.user_id
@@ -88,11 +88,9 @@
 
     <!-- 댓글 삭제 -->
     <update id="deleteComment">
-        UPDATE comment
-           SET status = "N"
-         WHERE IF((SELECT b.cmlayer FROM (SELECT a.cmlayer FROM comment a WHERE a.comment_id = #{id}) AS b) = 0
-                    , comment_group = (SELECT b.comment_group FROM (SELECT a.comment_group FROM comment a WHERE a.comment_id = #{id}) AS b)
-                    , comment_id = #{id});
+        DELETE
+        FROM comment
+        WHERE comment_id = #{id}
     </update>
 
 </mapper>

@@ -25,6 +25,6 @@ public interface CommentMapper {
 
     void updateComment(CommentDto commentDto); //댓글 수정
 
-    void deleteComment(CommentDto commentDto); //댓글 삭제
+    void deleteComment(Long id); //댓글 삭제
 
 }

@@ -77,20 +77,20 @@ public class UserController {
 
     //계정 상세 정보 등록
     @PostMapping("/info/new")
-    public UserInfo createUserInfo(@RequestPart UserInfoDto userInfoDto, @RequestPart MultipartFile profileImg,
+    public UserInfo createUserInfo(@RequestPart UserInfoDto userInfoDto, @RequestPart(required = false) MultipartFile profileImg,
                                    @AuthenticationPrincipal PrincipalDetail principalDetail) throws Exception {
         return userService.createUserInfo(userInfoDto, profileImg, principalDetail);
     }
 
     //계정 상세 정보 수정
     @PutMapping("/info/update")
-    public UserInfo updateUserInfo(@RequestPart UserInfoDto userInfoDto, @RequestPart MultipartFile profileImg,
+    public UserInfo updateUserInfo(@RequestPart UserInfoDto userInfoDto, @RequestPart(required = false) MultipartFile profileImg,
                                    @AuthenticationPrincipal PrincipalDetail principalDetail) throws Exception {
         return userService.updateUserInfo(userInfoDto, profileImg, principalDetail);
     }
 
     @PostMapping("/info/new2")
-    public ResponseEntity<ResponseUserInfoDto> createUserInfov2(@RequestPart UserInfoDto userInfoDto, @RequestPart MultipartFile profileImg,
+    public ResponseEntity<ResponseUserInfoDto> createUserInfov2(@RequestPart UserInfoDto userInfoDto, @RequestPart(required = false) MultipartFile profileImg,
                                                 @AuthenticationPrincipal PrincipalDetail principalDetail) throws Exception {
         ResponseUserInfoDto responseUserInfoDto = userService.createUserInfov2(userInfoDto, profileImg, principalDetail);
 

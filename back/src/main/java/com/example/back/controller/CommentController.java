@@ -53,8 +53,8 @@ public class CommentController {
     }
 
     //댓글 삭제
-    @PostMapping("/delete")
-    public void deleteComment(@RequestBody CommentDto commentDto) {
-        commentMapper.deleteComment(commentDto);
+    @DeleteMapping("/delete/{id}")
+    public void deleteComment(@PathVariable Long id) {
+        commentMapper.deleteComment(id);
     }
 }
