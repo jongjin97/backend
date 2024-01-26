@@ -6,7 +6,7 @@
 
     <!-- 댓글 조회 -->
     <select id="selectComment" resultType="hashmap">
-        SELECT c.contents, u.nickname, c.update_time, ui.img_url, c.comment_group
+        SELECT c.user_id, c.contents, u.nickname, c.update_time, ui.img_url, c.comment_group
         FROM board b
         INNER JOIN comment c ON b.board_id = c.board_id
         INNER JOIN user u ON u.user_id = c.user_id
