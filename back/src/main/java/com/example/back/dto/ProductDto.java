@@ -42,6 +42,7 @@ public class ProductDto {
     private List<Long> productImgIds = new ArrayList<>();
     private List<ProductImageDto> productImageDtoList = new ArrayList<>();
     private List<RequestUserInfoDto> userInfoDtoList = new ArrayList<>();
+    private List<RegionDto> regionDtoList = new ArrayList<>();
 
     public ProductDto(Product product, Region region, User user) {
         this.userId = user.getId();
