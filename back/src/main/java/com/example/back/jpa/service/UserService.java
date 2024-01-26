@@ -40,6 +40,14 @@ public class UserService {
 
         //이메일 중복 검사
         validateDuplicateMember(user);
+        UserInfo userInfo = UserInfoDto.builder()
+                .phoneNum("")
+                .usrNickName(userDto.getNickname())
+                .user(user)
+                .build().toEntity();
+
+        userInfoRepository.save(userInfo);
+
         return userRepository.save(user);
     }
 
