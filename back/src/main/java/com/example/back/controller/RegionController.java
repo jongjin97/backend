@@ -27,9 +27,16 @@ public class RegionController {
 
     @PostMapping
     public ResponseEntity<RegionDto> saveAndUpdateRegion(@AuthenticationPrincipal PrincipalDetail principalDetail
-            , @RequestBody RegionDto regionDto){
-        regionDto.setUserId(principalDetail.getId());
-        RegionDto regionResult = regionService.saveAndUpdateRegion(regionDto);
-        return ResponseEntity.ok(regionResult);
+            , @RequestBody String regionName){
+        regionName = regionName.replaceAll("\"", "");
+        RegionDto regionDto = regionService.saveAndUpdateRegion(regionName, principalDetail.getUser());
+        return  ResponseEntity.ok(regionDto);
     }
+    @GetMapping
+    public ResponseEntity<RegionDto> getRegionByUserId(@AuthenticationPrincipal PrincipalDetail principalDetail){
+        RegionDto regionDto = regionService.selectRegionByUserId(principalDetail.getId());
+
+        return ResponseEntity.ok(regionDto);
+    }
+
 }

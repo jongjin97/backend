@@ -43,11 +43,16 @@ public class Region extends BaseEntity {
         this.status = status;
     }
 
+    public void setRegionName(String regionName) {
+        this.regionName = regionName;
+    }
+
     @Builder
-    public Region(String regionName, String leadStatus, String noticeStatus, User user) {
+    public Region(String regionName, String leadStatus, String noticeStatus, User user, String status) {
         this.regionName = regionName;
         this.leadStatus = leadStatus;
         this.noticeStatus = noticeStatus;
         this.user = user;
+        this.status = status;
     }
 }

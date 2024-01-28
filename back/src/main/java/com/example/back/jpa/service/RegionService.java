@@ -23,21 +23,15 @@ public class RegionService {
 
     //Region 삽입, 수정 메소드
     @Transactional
-    public RegionDto saveAndUpdateRegion(RegionDto regionDto){
-        //userId로 UserEntity 조회, 없으면 예외 처리
-        User user = userRepository.findById(regionDto.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + regionDto.getUserId()));
-        //userEntity, regionName 으로 AttentionEntity 조회, 없으면 생성
-        Region region = regionRepository.findByUserAndAndRegionName(user, regionDto.getRegionName())
-                .orElse(Region.builder()
-                        .regionName(regionDto.getRegionName())
-                        .noticeStatus(regionDto.getNoticeStatus())
-                        .leadStatus(regionDto.getLeadStatus())
-                        .user(user)
-                        .build());
-        //regionEntity status 수정
-        region.setStatus(regionDto.getStatus());
-        //regionEntity 저장
+    public RegionDto saveAndUpdateRegion(String regionName, User user){
+
+        Region region = regionRepository.findByUser_Id(user.getId()).orElse(Region.builder()
+                .regionName(regionName)
+                .noticeStatus("Y")
+                .leadStatus("Y")
+                .user(user)
+                .status("y").build());
+        region.setRegionName(regionName);
         regionRepository.save(region);
 
         return new RegionDto(region, user);
@@ -56,5 +50,14 @@ public class RegionService {
         return regionList.stream()
                 .map(region -> new RegionDto(region, user))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public RegionDto selectRegionByUserId(long userId){
+        //retionList 없을 때 빈 리스트 반환
+        Region region = regionRepository.findByUser_Id(userId).orElse(null);
+        RegionDto regionDto = new RegionDto(region);
+        //regionList를 regionDtoList로 변환
+        return regionDto;
     }
 }
