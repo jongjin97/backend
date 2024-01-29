@@ -59,4 +59,16 @@ public class ProductImageService {
             savedProductImage.updateProductImg(oriImgName, imgName, imgUrl);
         }
     }
+
+    public void deleteProductImage(Long productImageId) throws Exception {
+
+        ProductImage savedProductImage = productImageRepository.findById(productImageId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        //기존 이미지 파일 삭제
+        if(!StringUtils.isEmpty(savedProductImage.getImgName())) {
+
+            fileService.deleteFile(productImageLocation + "/" + savedProductImage.getImgName());
+        }
+    }
 }

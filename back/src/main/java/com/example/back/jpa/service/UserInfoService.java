@@ -76,4 +76,15 @@ public class UserInfoService {
         userInfo.updateProfileImg(oriImgName, imgName, imgUrl);
         return userInfoRepository.save(userInfo);
     }
+
+    public void deleteProfileImg(Long userInfoId) throws Exception {
+
+        UserInfo savedProfileImg = userInfoRepository.findById(userInfoId)
+                .orElseThrow(EntityNotFoundException::new);
+        //기존 이미지 파일 삭제
+        if (!StringUtils.isEmpty(savedProfileImg.getImgName())) {
+
+            fileService.deleteFile(profileImgLocation + "/" + savedProfileImg.getImgName());
+        }
+    }
 }

@@ -92,7 +92,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{productId}") //상품 삭제
-    public ResponseEntity<Object> deleteProduct(@PathVariable Long productId) {
+    public ResponseEntity<Object> deleteProduct(@PathVariable Long productId) throws Exception {
 
         productService.deleteProduct(productId);
 

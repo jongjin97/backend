@@ -58,7 +58,7 @@ public class BoardController {
     }
 
     @DeleteMapping("/lists/{boardId}") //board 삭제
-    public ResponseEntity<?> deleteBoard(@PathVariable Long boardId) {
+    public ResponseEntity<?> deleteBoard(@PathVariable Long boardId) throws Exception {
 
         boardService.deleteBoard(boardId);
 

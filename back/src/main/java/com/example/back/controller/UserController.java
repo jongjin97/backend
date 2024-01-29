@@ -64,8 +64,8 @@ public class UserController {
 
     //계정 삭제
     @DeleteMapping("/delete")
-    public void deleteUser(@AuthenticationPrincipal PrincipalDetail principalDetail) {
-        userService.deleteUser(principalDetail.getEmail());
+    public void deleteUser(@AuthenticationPrincipal PrincipalDetail principalDetail) throws Exception {
+        userService.deleteUser(principalDetail);
     }
 
     //계정 정보 조회

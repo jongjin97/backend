@@ -1,6 +1,7 @@
 package com.example.back.jpa.service;
 
 import com.example.back.entity.BoardImage;
+import com.example.back.entity.ProductImage;
 import com.example.back.repository.BoardImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,6 +57,18 @@ public class BoardImageService {
             String imgName = fileService.uploadFile(boardImageLocation, oriImgName, itemImgFile.getBytes());
             String imgUrl = "/images/board/" + imgName;
             savedBoardImage.updateBoardImg(oriImgName, imgName, imgUrl);
+        }
+    }
+
+    public void deleteBoardImage(Long productImageId) throws Exception {
+
+        BoardImage savedBoardImage = boardImageRepository.findById(productImageId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        //기존 이미지 파일 삭제
+        if(!StringUtils.isEmpty(savedBoardImage.getImgName())) {
+
+            fileService.deleteFile(boardImageLocation + "/" + savedBoardImage.getImgName());
         }
     }
 }

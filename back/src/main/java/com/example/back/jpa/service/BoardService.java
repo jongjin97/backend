@@ -99,12 +99,18 @@ public class BoardService {
     }
 
     @Transactional
-    public void deleteBoard(Long boardId) {
+    public void deleteBoard(Long boardId) throws Exception {
 
-        Board board = boardRepository.findById(boardId)
-                .orElseThrow(() -> new IllegalArgumentException("Board not exist with ID :" + boardId));
+        List<Long> boardImgIds = boardImageRepository.countById(boardId);
 
-//        board.getCommentList().remove(0);
+
+        //이미지 등록
+        if(boardImgIds != null) {
+            for (int i = 0; i < boardImgIds.size(); i++) {
+
+                boardImageService.deleteBoardImage(boardImgIds.get(i));
+            }
+        }
 
         boardRepository.deleteById(boardId);
     }

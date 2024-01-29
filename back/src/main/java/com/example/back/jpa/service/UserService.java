@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -77,8 +78,15 @@ public class UserService {
 
     //계정 삭제
     @Transactional
-    public void deleteUser(String email) {
-        userRepository.deleteByEmail(email);
+    public void deleteUser(PrincipalDetail principalDetail) throws Exception {
+
+        User user = userRepository.findById(principalDetail.getId()).orElseThrow(EntityNotFoundException::new);
+        UserInfo userInfo = userInfoRepository.findById(user.getUserInfo().getId()).orElseThrow(EntityNotFoundException::new);
+
+        //프로필 이미지 삭제
+        userInfoService.deleteProfileImg(userInfo.getId());
+
+        userRepository.deleteById(principalDetail.getId());
     }
 
     private void validateDuplicateMember(User user) {

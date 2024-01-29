@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
@@ -139,9 +140,20 @@ public class ProductService {
     }
 
     @Transactional
-    public void deleteProduct(Long pdId) {
+    public void deleteProduct(Long productId) throws Exception {
 
-        productRepository.deleteById(pdId);
+        List<Long> productImgIds = productImageRepository.countById(productId);
+
+
+        //이미지 등록
+        if(productImgIds != null) {
+            for (int i = 0; i < productImgIds.size(); i++) {
+
+                productImageService.deleteProductImage(productImgIds.get(i));
+            }
+        }
+
+        productRepository.deleteById(productId);
     }
 
 
