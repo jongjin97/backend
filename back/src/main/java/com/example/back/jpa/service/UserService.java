@@ -160,7 +160,12 @@ public class UserService {
                 .usrNickName(userInfoDto.getUsrNickName())
                 .user(user)
                 .build().toEntity());
-        UserInfo savedUserInfo = userInfoService.saveProfileImgv2(userInfo, profileImg);
+        UserInfo savedUserInfo;
+        userInfo.setUsrNickName(userInfoDto.getUsrNickName());
+        if(profileImg != null)
+            savedUserInfo = userInfoService.saveProfileImgv2(userInfo, profileImg);
+        else
+            savedUserInfo = userInfo;
         ResponseUserInfoDto responseUserInfoDto = ResponseUserInfoDto.builder()
                 .id(savedUserInfo.getId())
                 .phoneNum(savedUserInfo.getPhoneNum())
