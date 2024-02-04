@@ -57,6 +57,8 @@ public class ProductImageService {
             String imgName = fileService.uploadFile(productImageLocation, oriImgName, itemImgFile.getBytes());
             String imgUrl = "/images/product/" + imgName;
             savedProductImage.updateProductImg(oriImgName, imgName, imgUrl);
+
+            System.out.println("imgName = " + oriImgName);
         }
     }
 
@@ -71,4 +73,5 @@ public class ProductImageService {
             fileService.deleteFile(productImageLocation + "/" + savedProductImage.getImgName());
         }
     }
+
 }

@@ -51,7 +51,7 @@ public class BoardController {
         return ResponseEntity.ok(boardDtoList);
     }
 
-    @PutMapping("/lists/{boardId}") //boardId에 따른 board 수정
+    @PostMapping("/lists/{boardId}") //boardId에 따른 board 수정
     public Long updateBoard(@PathVariable Long boardId, @RequestPart BoardDto boardDto, @RequestPart(required = false) List<MultipartFile> boardImgFileList) throws Exception {
 
         return boardService.updateBoard(boardId, boardDto, boardImgFileList);

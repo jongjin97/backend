@@ -66,11 +66,11 @@ public class ProductService {
         //pdTitle, pdContents, pdCategory, price
 
         //이미지 등록
-        for(int i=0; i<productImgFileList.size(); i++) {
+        for (int i = 0; i < productImgFileList.size(); i++) {
 
             ProductImage productImage = new ProductImage();
             productImage.setProduct(product);
-            if(i == 0)
+            if (i == 0)
                 productImage.setRepImgYn("Y");
             else
                 productImage.setRepImgYn("N");
@@ -99,7 +99,7 @@ public class ProductService {
 //        productDto.setProductImageDtoList(productImageDtoList);
         MainProductDto mainProductDto = productRepository.findProductAndImgUrlById(productId);
 
-        if(principalDetail != null){
+        if (principalDetail != null) {
             Product product = productRepository.findById(productId).orElseThrow(EntityNotFoundException::new);
             selectProductService.saveSelectProduct(product, principalDetail.getUser());
         }
@@ -128,11 +128,31 @@ public class ProductService {
 
         List<Long> productImgIds = productImageRepository.countById(productId);
 
-        //이미지 등록
-        if(productImgFileList != null) {
+        if (productImgFileList != null && productImgFileList.size() < productImgIds.size()) {
+            //이미지 등록
             for (int i = 0; i < productImgFileList.size(); i++) {
 
                 productImageService.updateProductImage(productImgIds.get(i), productImgFileList.get(i));
+            }
+
+
+            //이미지 삭제
+            for (int i = productImgFileList.size(); i < productImgIds.size(); i++) {
+                productImageRepository.deleteById(productImgIds.get(i));
+            }
+        } else if (productImgFileList != null) {
+            //이미지 등록
+            for (int i = 0; i < productImgIds.size(); i++) {
+
+                productImageService.updateProductImage(productImgIds.get(i), productImgFileList.get(i));
+            }
+
+            for (int i = productImgIds.size(); i < productImgFileList.size(); i++) {
+
+                ProductImage productImage = new ProductImage();
+                productImage.setProduct(product);
+                productImage.setRepImgYn("N");
+                productImageService.saveProductImage(productImage, productImgFileList.get(i));
             }
         }
 
@@ -146,7 +166,7 @@ public class ProductService {
 
 
         //이미지 등록
-        if(productImgIds != null) {
+        if (productImgIds != null) {
             for (int i = 0; i < productImgIds.size(); i++) {
 
                 productImageService.deleteProductImage(productImgIds.get(i));
@@ -199,7 +219,7 @@ public class ProductService {
                 .userId(user.getId())
                 .build();
 
-        if(productDetails.getStatus().equals("C")) {
+        if (productDetails.getStatus().equals("C")) {
             purchaseHistoryMapper.createPurchaseHistory(purchaseHistoryDto, user.getId());
         }
 
@@ -210,14 +230,14 @@ public class ProductService {
     }
 
     @Transactional
-    public Slice<ResponseProduct> getProductListByRegionName(String regionName, Pageable pageable){
+    public Slice<ResponseProduct> getProductListByRegionName(String regionName, Pageable pageable) {
         // ProductSlice 조회
         Slice<Product> productList = productRepository.findByRegion_RegionNameContainsOrderByRegTimeDesc(regionName, pageable);
         // ResponeProduct로 변환
         Slice<ResponseProduct> responseProductSlice = productList.map(ResponseProduct::new);
         // ProductList 별 조회수 조회
         List<Object[]> objects = productRepository.findProductsAndCount(productList.toList());
-        for(int i=0; i<objects.size(); i++){
+        for (int i = 0; i < objects.size(); i++) {
             ResponseProduct responseProduct = responseProductSlice.toList().get(i);
             responseProduct.setSelectedCount((Long) objects.get(i)[1]);
             responseProduct.setAttentionCount((Long) objects.get(i)[2]);
@@ -226,17 +246,17 @@ public class ProductService {
     }
 
     @Transactional
-    public ResponseProduct  getProductById(Long id, PrincipalDetail principalDetail) {
+    public ResponseProduct getProductById(Long id, PrincipalDetail principalDetail) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Product not exist with id :" + id));
         // 로그인 되어 있을 때 SelectProduct 추가
-        if(principalDetail != null){
+        if (principalDetail != null) {
             User user = userRepository.findById(principalDetail.getId())
                     .orElseThrow(() -> new IllegalArgumentException("User not found with ID : " + principalDetail.getId()));
 
             SelectProduct selectProduct = selectProductRepository
                     .findByUser_IdAndProduct_Id(principalDetail.getId(), product.getId())
-                    .orElse(new SelectProduct("Y",  user, product));
+                    .orElse(new SelectProduct("Y", user, product));
             selectProductRepository.save(selectProduct);
         }
 
@@ -244,11 +264,11 @@ public class ProductService {
     }
 
     @Transactional
-    public Slice<ResponseProduct> getProductListByProductTitle(String productTitle, Pageable pageable){
+    public Slice<ResponseProduct> getProductListByProductTitle(String productTitle, Pageable pageable) {
         Slice<Product> products = productRepository.findProductsByProductName(productTitle, pageable);
         List<Object[]> objects = productRepository.findProductsAndCount(products.toList());
         Slice<ResponseProduct> responseProductSlice = products.map(ResponseProduct::new);
-        for(int i=0; i<objects.size(); i++){
+        for (int i = 0; i < objects.size(); i++) {
             ResponseProduct responseProduct = responseProductSlice.toList().get(i);
             responseProduct.setSelectedCount((Long) objects.get(i)[1]);
             responseProduct.setAttentionCount((Long) objects.get(i)[2]);
@@ -263,7 +283,7 @@ public class ProductService {
         List<ProductImage> productImageList = productImageRepository.findByProductIdOrderByIdAsc(productId);
         List<ProductImageDto> productImageDtoList = new ArrayList<>();
 
-        for(ProductImage productImage : productImageList) {
+        for (ProductImage productImage : productImageList) {
 
             ProductImageDto productImageDto = ProductImageDto.of(productImage);
             productImageDtoList.add(productImageDto);
@@ -274,7 +294,7 @@ public class ProductService {
         List<UserInfo> userInfoList = userInfoRepository.findByUser_UserInfo(product.getUser().getUserInfo().getId());
         List<RequestUserInfoDto> userInfoDtoList = new ArrayList<>();
 
-        for(UserInfo userInfo : userInfoList) {
+        for (UserInfo userInfo : userInfoList) {
             RequestUserInfoDto userInfoDto = RequestUserInfoDto.of(userInfo);
             userInfoDtoList.add(userInfoDto);
         }
@@ -282,7 +302,7 @@ public class ProductService {
         List<Region> regionList = regionRepository.findByRegion(product.getRegion().getId());
         List<RegionDto> regionDtoList = new ArrayList<>();
 
-        for(Region region : regionList) {
+        for (Region region : regionList) {
             RegionDto regionDto = RegionDto.of(region);
             regionDtoList.add(regionDto);
         }
@@ -303,6 +323,7 @@ public class ProductService {
 
         return products;
     }
+
     @Transactional
     public List<MainProductDto> getAllProductByUser(Long id) {
 
@@ -323,12 +344,13 @@ public class ProductService {
 
         return products;
     }
+
     @Transactional
     public void updateProductStatus(Long productId, String status) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("Product not exist with id :" + productId));
         product.setStatus(status);
-        if(status.equals("C")){
+        if (status.equals("C")) {
             PurchaseHistoryDto purchaseHistoryDto = new PurchaseHistoryDto();
             purchaseHistoryDto.setProductId(productId);
             purchaseHistoryMapper.createPurchaseHistoryWithoutUser(purchaseHistoryDto);
@@ -337,7 +359,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void renewProduct(Long productId){
+    public void renewProduct(Long productId) {
         Product product = productRepository.findById(productId).orElseThrow(
                 IllegalArgumentException::new);
         Product newProduct = Product.builder().pdTitle(product.getPdTitle())
@@ -350,7 +372,7 @@ public class ProductService {
                 .region(product.getRegion()).build();
         List<ProductImage> images = product.getProductImages();
         List<ProductImage> newImages = new ArrayList<>();
-        for (ProductImage productImage: images){
+        for (ProductImage productImage : images) {
             ProductImage pi = new ProductImage();
             pi.setImgUrl(productImage.getImgUrl());
             pi.setImgName(productImage.getImgName());
