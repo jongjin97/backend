@@ -89,19 +89,10 @@ public class BoardService {
 
         if (boardImgFileList != null && boardImgFileList.size() < boardImgIds.size()) {
             //이미지 등록
-            if (boardImgIds != null) {
-                for (int i = 0; i < boardImgIds.size(); i++) {
+            for (int i = 0; i < boardImgFileList.size(); i++) {
 
-                    boardImageService.updateBoardImage(boardImgIds.get(i), boardImgFileList.get(i));
-                }
+                boardImageService.updateBoardImage(boardImgIds.get(i), boardImgFileList.get(i));
             }
-
-            if (boardImgFileList != null && boardImgFileList.size() < boardImgIds.size()) {
-                //이미지 등록
-                for (int i = 0; i < boardImgFileList.size(); i++) {
-
-                    boardImageService.updateBoardImage(boardImgIds.get(i), boardImgFileList.get(i));
-                }
 
 
                 //이미지 삭제
@@ -123,7 +114,7 @@ public class BoardService {
                     boardImageService.saveBoardImage(boardImage, boardImgFileList.get(i));
                 }
             }
-        }
+
 
         return board.getId();
     }
