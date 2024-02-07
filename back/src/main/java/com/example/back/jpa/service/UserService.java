@@ -3,12 +3,12 @@ package com.example.back.jpa.service;
 
 import com.example.back.config.JwtProvider;
 import com.example.back.config.auth.PrincipalDetail;
-import com.example.back.dto.ResponseUserInfoDto;
-import com.example.back.dto.UserDto;
-import com.example.back.dto.UserInfoDto;
+import com.example.back.dto.*;
+import com.example.back.entity.Region;
 import com.example.back.entity.User;
 import com.example.back.entity.UserInfo;
 import com.example.back.mybatis.mapper.UserInfoMapper;
+import com.example.back.repository.RegionRepository;
 import com.example.back.repository.UserInfoRepository;
 import com.example.back.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +32,7 @@ public class UserService {
     private final UserInfoMapper userInfoMapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
+    private final RegionRepository regionRepository;
 
     //계정 생성
     public User createUser(UserDto userDto) {
@@ -44,6 +45,9 @@ public class UserService {
         userRepository.save(user);
 
         User findUser = userRepository.findById(user.getId()).orElseThrow(EntityNotFoundException::new);
+        Region region = RegionRequestDto.builder()
+                .user(user)
+                .build().toEntity();
 
         UserInfo userInfo = UserInfoDto.builder()
                 .phoneNum("")
@@ -53,6 +57,7 @@ public class UserService {
 
 
         userInfoRepository.save(userInfo);
+        regionRepository.save(region);
 
         return user;
     }

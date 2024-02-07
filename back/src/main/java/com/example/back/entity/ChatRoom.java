@@ -2,6 +2,7 @@ package com.example.back.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.List;
 @Entity
 @Table(name = "chat_room")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 public class ChatRoom extends BaseEntity {
 
@@ -39,7 +41,7 @@ public class ChatRoom extends BaseEntity {
     @JoinColumn
     private User buyUser; //구매 유저
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
 
