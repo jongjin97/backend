@@ -125,4 +125,12 @@ public class ChatService {
         ChatRoomDto chatRoomDto = chatRoomRepository.findChatRoomByBuyUserIdAndProductId(userId, productId);
         return chatRoomDto;
     }
+
+    public void deleteRoom(Long chatId, Long id) {
+
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found with ID: "));
+
+
+        chatRoomRepository.deleteById(chatId);
+    }
 }

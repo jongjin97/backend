@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 채팅방 테이블
@@ -29,17 +31,20 @@ public class ChatRoom extends BaseEntity {
     @Column(nullable = false)
     private String buyerStatus; //구매 유저 기준 (N : 삭제 방 Y : 있는 방)
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private User sellUser; //판매 유저
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private User buyUser; //구매 유저
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
+
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
+    private List<ChatMessage> chatMessages = new ArrayList<>();
 
     @Builder
     public ChatRoom(User sellUser, User buyUser, Product product) {

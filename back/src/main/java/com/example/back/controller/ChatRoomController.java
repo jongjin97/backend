@@ -7,6 +7,7 @@ import com.example.back.entity.ChatMessage;
 import com.example.back.jpa.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,12 +33,19 @@ public class ChatRoomController {
         return chatService.createRoom(productId, principalDetail, message);
     }
 
+    // 채팅방 나가기
+    @DeleteMapping("/exit/{chatId}")
+    public void deleteRoom(@PathVariable Long chatId, @AuthenticationPrincipal PrincipalDetail principalDetail) {
+        chatService.deleteRoom(chatId, principalDetail.getId());
+    }
+
     @GetMapping("/chatroom")
     public List<ChatMessageListDto> getChatRoomList(@AuthenticationPrincipal PrincipalDetail principalDetail){
         return chatService.findChatRoomList(principalDetail.getId());
 
     }
 
+    //채팅방 조회
     @GetMapping("/chatroom/{chatId}")
     public ChatRoomDto getChatRoom(@AuthenticationPrincipal PrincipalDetail principalDetail, @PathVariable Long chatId){
         return chatService.findChatRoom(chatId);

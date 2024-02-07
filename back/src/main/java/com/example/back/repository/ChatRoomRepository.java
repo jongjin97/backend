@@ -8,5 +8,4 @@ import java.util.List;
 
 
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long>, ChatRoomCustomRepository{
-
 }
