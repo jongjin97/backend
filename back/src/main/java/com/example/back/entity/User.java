@@ -21,6 +21,7 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Table(name = "user")
 public class User extends BaseEntity {
@@ -71,6 +72,9 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SelectProduct> selectProducts = new ArrayList<>();
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private ChatRoom chatRoom;
 
     @Builder
     public User(String email, String password, String nickname, String status, String provider, String providerId, Role role, UserInfo userInfo) {

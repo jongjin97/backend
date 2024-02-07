@@ -128,6 +128,8 @@ public class ProductService {
 
         List<Long> productImgIds = productImageRepository.countById(productId);
 
+        System.out.println("productImgFileList = " + productImgFileList);
+
         if (productImgFileList != null && productImgFileList.size() < productImgIds.size()) {
             //이미지 등록
             for (int i = 0; i < productImgFileList.size(); i++) {
