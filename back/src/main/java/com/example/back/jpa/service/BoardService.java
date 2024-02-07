@@ -87,39 +87,41 @@ public class BoardService {
 
         List<Long> boardImgIds = boardImageRepository.countById(boardId);
 
-        //이미지 등록
-        if(boardImgIds != null) {
-            for (int i = 0; i < boardImgIds.size(); i++) {
-
-                boardImageService.updateBoardImage(boardImgIds.get(i), boardImgFileList.get(i));
-            }
-        }
-
         if (boardImgFileList != null && boardImgFileList.size() < boardImgIds.size()) {
             //이미지 등록
-            for (int i = 0; i < boardImgFileList.size(); i++) {
+            if (boardImgIds != null) {
+                for (int i = 0; i < boardImgIds.size(); i++) {
 
-                boardImageService.updateBoardImage(boardImgIds.get(i), boardImgFileList.get(i));
+                    boardImageService.updateBoardImage(boardImgIds.get(i), boardImgFileList.get(i));
+                }
             }
 
+            if (boardImgFileList != null && boardImgFileList.size() < boardImgIds.size()) {
+                //이미지 등록
+                for (int i = 0; i < boardImgFileList.size(); i++) {
 
-            //이미지 삭제
-            for (int i = boardImgFileList.size(); i < boardImgIds.size(); i++) {
-                boardImageRepository.deleteById(boardImgIds.get(i));
-            }
-        } else if (boardImgFileList != null) {
-            //이미지 등록
-            for (int i = 0; i < boardImgIds.size(); i++) {
+                    boardImageService.updateBoardImage(boardImgIds.get(i), boardImgFileList.get(i));
+                }
 
-                boardImageService.updateBoardImage(boardImgIds.get(i), boardImgFileList.get(i));
-            }
 
-            for (int i = boardImgIds.size(); i < boardImgFileList.size(); i++) {
+                //이미지 삭제
+                for (int i = boardImgFileList.size(); i < boardImgIds.size(); i++) {
+                    boardImageRepository.deleteById(boardImgIds.get(i));
+                }
+            } else if (boardImgFileList != null) {
+                //이미지 등록
+                for (int i = 0; i < boardImgIds.size(); i++) {
 
-                BoardImage boardImage = new BoardImage();
-                boardImage.setBoard(board);
-                boardImage.setRepImgYn("N");
-                boardImageService.saveBoardImage(boardImage, boardImgFileList.get(i));
+                    boardImageService.updateBoardImage(boardImgIds.get(i), boardImgFileList.get(i));
+                }
+
+                for (int i = boardImgIds.size(); i < boardImgFileList.size(); i++) {
+
+                    BoardImage boardImage = new BoardImage();
+                    boardImage.setBoard(board);
+                    boardImage.setRepImgYn("N");
+                    boardImageService.saveBoardImage(boardImage, boardImgFileList.get(i));
+                }
             }
         }
 
