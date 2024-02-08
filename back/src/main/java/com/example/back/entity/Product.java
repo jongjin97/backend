@@ -1,7 +1,6 @@
 package com.example.back.entity;
 
 
-import com.example.back.dto.ChatRoomDto;
 import com.example.back.dto.ProductDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
@@ -66,7 +65,6 @@ public class Product extends BaseEntity {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Attention> attentions = new ArrayList<>();
-
     @OneToOne(mappedBy = "product" , cascade = CascadeType.ALL)
     private PurchaseHistory purchaseHistory;
     @Builder
