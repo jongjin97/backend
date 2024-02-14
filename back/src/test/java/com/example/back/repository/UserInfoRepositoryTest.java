@@ -41,5 +41,5 @@ class UserInfoRepositoryTest {
         assertNotNull(find);
         assertEquals(userInfo.getId(), find.getId());
     }
-    
+
 }
