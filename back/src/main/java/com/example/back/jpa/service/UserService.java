@@ -41,14 +41,14 @@ public class UserService {
 
         //이메일 중복 검사
         validateDuplicateMember(user);
-        userRepository.save(user);
+        user = userRepository.save(user);
 
-        User findUser = userRepository.findById(user.getId()).orElseThrow(EntityNotFoundException::new);
+        //User findUser = userRepository.findById(user.getId()).orElseThrow(EntityNotFoundException::new);
 
         UserInfo userInfo = UserInfoDto.builder()
                 .phoneNum("")
                 .usrNickName(userDto.getNickname())
-                .user(findUser)
+                .user(user)
                 .build().toEntity();
 
 
