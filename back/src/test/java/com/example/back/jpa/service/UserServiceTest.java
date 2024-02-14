@@ -1,6 +1,7 @@
 package com.example.back.jpa.service;
 
 import com.example.back.config.JwtProvider;
+import com.example.back.config.auth.PrincipalDetail;
 import com.example.back.constant.Role;
 import com.example.back.dto.UserDto;
 import com.example.back.entity.User;
@@ -23,11 +24,14 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
     @InjectMocks
     private UserService userService;
+    @Mock
+    private UserInfoService userInfoService;
     @Mock
     private UserRepository userRepository;
     @Mock
@@ -59,11 +63,40 @@ class UserServiceTest {
 
         // Then
         // Verify that userRepository.save is called once
-        Mockito.verify(userRepository, Mockito.times(1)).save(Mockito.any(User.class));
+        verify(userRepository, times(1)).save(Mockito.any(User.class));
 
         // Verify that userInfoRepository.save is called once
-        Mockito.verify(userInfoRepository, Mockito.times(1)).save(Mockito.any(UserInfo.class));
+        verify(userInfoRepository, times(1)).save(Mockito.any(UserInfo.class));
         assertEquals(createdUser.getEmail(), userDto.getEmail());
     }
-    
+
+    @Test
+    void deleteUser() throws Exception {
+        // Arrange
+        User testUser = User.builder()
+                .email("test@example.com")
+                .password("test123")
+                .nickname("TestUser")
+                .status("Y")
+                .provider("google")
+                .providerId("123456789")
+                .role(Role.USER)
+                .userInfo(UserInfo.builder()
+                        .id(100L)
+                        .phoneNum("010-1234-5678")
+                        .usrNickName("TestUser")
+                        .imgUrl("/images/user/profile.png")
+                        .build())
+                .build();
+
+        PrincipalDetail principalDetail = new PrincipalDetail(testUser);
+        when(userRepository.findById(principalDetail.getId())).thenReturn(Optional.of(testUser));
+        when(userInfoRepository.findById(anyLong())).thenReturn(Optional.of(testUser.getUserInfo()));
+        // Act
+        userService.deleteUser(principalDetail);
+
+        // Assert
+        verify(userInfoService, times(1)).deleteProfileImg(testUser.getUserInfo().getId());
+        verify(userRepository, times(1)).deleteById(principalDetail.getId());
+    }
 }
