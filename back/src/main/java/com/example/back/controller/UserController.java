@@ -39,11 +39,6 @@ public class UserController {
     public ResponseEntity<?> loginUser(@RequestBody UserDto userDto, HttpServletResponse response) {
         UserDto result = userService.loginUser(userDto);
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("authentication = " + authentication);
-
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println("principal = " + principal);
         //token header에 추가
         response.setHeader(HttpHeaders.AUTHORIZATION, result.getToken());
 
